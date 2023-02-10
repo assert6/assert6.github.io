@@ -4,11 +4,11 @@
 
 # Site
 title: 断言说
-subtitle: 断言说了啥
+subtitle: 断言怎么说
 description: ''
 keywords: Hyperf PHP 断言 断言说 Assert6
 author: 张城铭
-language: en
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
