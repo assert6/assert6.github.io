@@ -17,19 +17,28 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>断言说</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="断言说">
-<meta property="og:url" content="https://assert6.github.io/about/index.html">
+  <title>【手把手教你】用Swoft 搭建微服务(TCP RPC) | 断言说</title>
+  <meta name="description" content="Swoft 是什么? Swoft 框架是首个基于Swoole 原生协程的新时代 PHP高性能协程全栈框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM 全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程，灵活的注解 强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【手把手教你】用Swoft 搭建微服务(TCP RPC)">
+<meta property="og:url" content="https://assert6.github.io/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/index.html">
 <meta property="og:site_name" content="断言说">
+<meta property="og:description" content="Swoft 是什么? Swoft 框架是首个基于Swoole 原生协程的新时代 PHP高性能协程全栈框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM 全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程，灵活的注解 强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-13T10:38:17.027Z">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b17488cab644162a600088f">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b175328ab64416496000aa3">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b17581bab64416496000b69">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b175d89ab64416496000c3b">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b17a444ab644162a60016c5">
+<meta property="article:published_time" content="2018-06-05T16:00:00.000Z">
 <meta property="article:modified_time" content="2023-02-13T10:38:17.027Z">
 <meta property="article:author" content="张城铭">
-<meta property="article:tag" content="Hyperf PHP 断言 断言说 Assert6">
+<meta property="article:tag" content="手把手教你">
+<meta property="article:tag" content="Swoft">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leanote.com/api/file/getImage?fileId=5b17488cab644162a600088f">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://assert6.github.io/about/index.html">
+  <link rel="canonical" href="https://assert6.github.io/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/index.html">
   
     <link rel="alternate" href="/atom.xml" title="断言说" type="application/atom+xml">
   
@@ -291,29 +300,102 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-swoft/用Swoft 搭建微服务(TCP RPC)" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【手把手教你】用Swoft 搭建微服务(TCP RPC)
+    </h1>
+  
+
       
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/about/index.html" class="article-date">
-	  <time datetime="2023-02-13T10:38:17.027Z" itemprop="datePublished">2023-02-13</time>
+	<a href="/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/" class="article-date">
+	  <time datetime="2018-06-05T16:00:00.000Z" itemprop="datePublished">2018-06-06</time>
 	</a>
 </span>
         
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Swoft/" rel="tag">Swoft</a>, <a class="article-tag-link-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a>
+  </span>
+
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/about/index.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        
+        <h2 id="Swoft-是什么"><a href="#Swoft-是什么" class="headerlink" title="Swoft 是什么?"></a>Swoft 是什么?</h2><blockquote>
+<p>Swoft 框架是首个基于Swoole 原生协程的新时代 PHP高性能协程全栈框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM</p>
+<p>全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程，灵活的注解</p>
+<p>强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等</p>
+</blockquote>
+<p>上面是官网描述, 感觉太官方, 我总结一下:</p>
+<ul>
+<li>常驻内存</li>
+<li>协程</li>
+<li>学习曲线平滑</li>
+<li>国内框架</li>
+<li>开箱即用的RPC</li>
+</ul>
+<h2 id="如何搭建微服务"><a href="#如何搭建微服务" class="headerlink" title="如何搭建微服务?"></a>如何搭建微服务?</h2><p>首先确保已经可以正确搭建Swoft, 不清楚的可以查看<a target="_blank" rel="noopener" href="https://doc.swoft.org/master/zh-CN/quickstart/enviroment.html">Swoft 官方文档</a></p>
+<p>鉴于每个人的开发环境都不同, 这里选用官方<code>Docker</code> 作为开发环境</p>
+<p><a target="_blank" rel="noopener" href="https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe">Docker下载地址&gt;&gt;&gt;</a></p>
+<h2 id="拉Docker-镜像"><a href="#拉Docker-镜像" class="headerlink" title="拉Docker 镜像"></a>拉Docker 镜像</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull swoft/swoft</span><br></pre></td></tr></table></figure>
+
+<p>非常的简单<br><img src="https://leanote.com/api/file/getImage?fileId=5b17488cab644162a600088f" alt="title"><br>这样就是成功了</p>
+<p>为了方便理解</p>
+<p>我们把swoft 复制两份</p>
+<p>命名为<code>swoft-rpc</code>和<code>swoft-http</code></p>
+<p><code>swoft-rpc</code>只开启<code>TCP</code> 服务<br><code>swoft-http</code>只开启<code>HTTP</code> 服务</p>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>把根目录的<code>.env.example</code>复制一份为<code>.env</code></p>
+<blockquote>
+<p>.env 文件为swoft 配置文件, 最高优先级(覆盖config 下配置)</p>
+</blockquote>
+<p>HTTP 用到的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Server</span></span><br><span class="line">PFILE=/tmp/swoft.pid</span><br><span class="line">PNAME=php-swoft</span><br><span class="line">TCPABLE=<span class="literal">false</span>        //是否同时启动TCP 服务器,这里用不到改为<span class="literal">false</span></span><br><span class="line">CRONABLE=<span class="literal">false</span></span><br><span class="line">AUTO_RELOAD=<span class="literal">true</span></span><br><span class="line">AUTO_REGISTER=<span class="literal">false</span></span><br><span class="line">...</span><br><span class="line"><span class="comment"># HTTP</span></span><br><span class="line">HTTP_HOST=0.0.0.0   //监听的网卡</span><br><span class="line">HTTP_PORT=80        //监听的端口</span><br><span class="line">HTTP_MODE=SWOOLE_PROCESS    //不用管</span><br><span class="line">HTTP_TYPE=SWOOLE_SOCK_TCP   //不用管</span><br><span class="line">...//mysql 和redis 略过</span><br><span class="line"><span class="comment"># User service (demo service)</span></span><br><span class="line">USER_POOL_NAME=user //别名</span><br><span class="line">USER_POOL_URI=192.168.1.214:8099,192.168.1.214:8099 //负载均衡,URI填写为RPC 的地址,注意Docker和宿主之间的关系</span><br><span class="line">USER_POOL_MIN_ACTIVE=5  //下面都不用管</span><br><span class="line">USER_POOL_MAX_ACTIVE=10</span><br><span class="line">USER_POOL_MAX_WAIT=20</span><br><span class="line">USER_POOL_TIMEOUT=200</span><br><span class="line">USER_POOL_MAX_WAIT_TIME=3</span><br><span class="line">USER_POOL_MAX_IDLE_TIME=60</span><br><span class="line">USER_POOL_USE_PROVIDER=<span class="literal">false</span></span><br><span class="line">USER_POOL_BALANCER=random</span><br><span class="line">USER_POOL_PROVIDER=consul</span><br></pre></td></tr></table></figure>
+
+<p>RPC 用到的配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># TCP</span></span><br><span class="line">TCP_HOST=0.0.0.0    //监听的网卡</span><br><span class="line">TCP_PORT=8099       //监听的端口</span><br><span class="line">TCP_MODE=SWOOLE_PROCESS     //不用管</span><br><span class="line">TCP_TYPE=SWOOLE_SOCK_TCP    //不用管</span><br><span class="line">TCP_PACKAGE_MAX_LENGTH=2048 //最大链接数</span><br><span class="line">TCP_OPEN_EOF_CHECK=<span class="literal">false</span>    //不用管</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动Docker-容器"><a href="#启动Docker-容器" class="headerlink" title="启动Docker 容器"></a>启动Docker 容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --<span class="built_in">rm</span> -p 8099:8099 -v E:\WWW\swoft-rpc:/var/www/swoft  swoft/swoft /bin/bash</span><br></pre></td></tr></table></figure>
+<p>这里用<code>-it</code>和<code>-v</code>方便调试<br><img src="https://leanote.com/api/file/getImage?fileId=5b175328ab64416496000aa3" alt="title"><br>这样就是成功启动了</p>
+<h2 id="启动RPC-服务"><a href="#启动RPC-服务" class="headerlink" title="启动RPC 服务"></a>启动RPC 服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php bin/swoft rpc:start</span><br></pre></td></tr></table></figure>
+
+<p><code>RPC</code> 服务只需要单独启动<code>TCP</code> 服务器</p>
+<p>有的同学<code>RPC</code> 和<code>TCP</code> 的关系可能还没弄清楚</p>
+<p>这里<code>RPC</code> 服务和<code>TCP</code> 服务器可以类比为<code>Web</code> 服务和<code>HTTP</code> 服务器</p>
+<blockquote>
+<p>监听HTTP 来实现Web 服务<br>监听TCP 来实现RPC 服务</p>
+</blockquote>
+<p>就这样理解吧<br><img src="https://leanote.com/api/file/getImage?fileId=5b17581bab64416496000b69" alt="title"><br>这样就是成功启动了</p>
+<h2 id="启动Web服务"><a href="#启动Web服务" class="headerlink" title="启动Web服务"></a>启动Web服务</h2><p>也就是启动<code>HTTP</code> 服务器XD</p>
+<p>新开一个终端来创建新容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --<span class="built_in">rm</span> -p 9501:80 -v E:\WWW\swoft-http:/var/www/swoft swoft/swoft /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>这里端口改成9501, 因为本地开发环境已经用了80了:b</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php bin/swoft server:start</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://leanote.com/api/file/getImage?fileId=5b175d89ab64416496000c3b" alt="title"><br>因为在之前把自动开启TCP 服务器禁用了</p>
+<p>所以显示Disabled</p>
+<p>这样也就是成功了!</p>
+<p>访问一下<code>http://127.0.0.1:9501/</code>看下有没有问题</p>
+<p>没问题的话, 可以看下官方提供的RPC demo <code>http://127.0.0.1:9501/rpc/call</code></p>
+<p><img src="https://leanote.com/api/file/getImage?fileId=5b17a444ab644162a60016c5" alt="title"></p>
+<p>大功告成!</p>
+<p>是不是很简单!</p>
+<p>这里只教大家如何搭建, 下一篇来理解如何使用RPC</p>
+
       
     </div>
     <div class="article-footer">
@@ -322,7 +404,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://assert6.github.io/about/index.html" title="" target="_blank" rel="external">https://assert6.github.io/about/index.html</a>
+      <a href="https://assert6.github.io/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/" title="【手把手教你】用Swoft 搭建微服务(TCP RPC)" target="_blank" rel="external">https://assert6.github.io/2018-06-05/swoft/用Swoft 搭建微服务(TCP RPC)/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -365,6 +447,16 @@
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/" title="【手把手教你】用Swoft 搭建微服务(TCP RPC)2"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+  </ul>
   
   
   <!-- Button trigger modal -->
@@ -478,6 +570,10 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+
+
+
+   
 
 
 

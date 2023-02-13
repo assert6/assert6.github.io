@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>【手把手教你】自定义Swoft 注解和AOP | 断言说</title>
+  <meta name="description" content="序言前两篇关于Swoft RPC 的使用教程得到很多小伙伴的支持 并且反映网上很多关于Swoft 的讲解太过于深♂入, 很多小伙伴看不懂 这是很正常的, 因为开发者们对于使用难度的理解跟我们有些偏差 身为开发者自然知道如何使用, 认为不需要讲解, 也就是所谓的知识的诅咒 所以很多关于Swoft 的讲解都是底层原理 那在这我就开一个大佬们不屑的新手向讲解教程 (￣_ ￣ ) 叫做[手把手教你]系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【手把手教你】自定义Swoft 注解和AOP">
+<meta property="og:url" content="https://assert6.github.io/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/index.html">
+<meta property="og:site_name" content="断言说">
+<meta property="og:description" content="序言前两篇关于Swoft RPC 的使用教程得到很多小伙伴的支持 并且反映网上很多关于Swoft 的讲解太过于深♂入, 很多小伙伴看不懂 这是很正常的, 因为开发者们对于使用难度的理解跟我们有些偏差 身为开发者自然知道如何使用, 认为不需要讲解, 也就是所谓的知识的诅咒 所以很多关于Swoft 的讲解都是底层原理 那在这我就开一个大佬们不屑的新手向讲解教程 (￣_ ￣ ) 叫做[手把手教你]系列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52dc8aab64414100000d1f">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52c3e5ab644142f5000912">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52dcb0ab64414100000d28">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52e317ab64414100000f23">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52e34bab64414100000f2f">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52fa1bab64414100001286">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52fe45ab6441410000130e">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52faa7ab64414100001297">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b52fddfab644141000012f7">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b53009eab6441410000133c">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b5300beab644142f500133a">
+<meta property="article:published_time" content="2018-07-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-13T10:38:17.027Z">
+<meta property="article:author" content="张城铭">
+<meta property="article:tag" content="手把手教你">
+<meta property="article:tag" content="Swoft">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leanote.com/api/file/getImage?fileId=5b52dc8aab64414100000d1f">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://assert6.github.io/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="断言说" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/assert6" target="_blank">
+          <img class="img-circle img-rotate" src="https://avatars.githubusercontent.com/u/28561563" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">断言</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Hyperf 开发组成员</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>断言怎么说</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hyperf/" rel="tag">Hyperf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swoft/" rel="tag">Swoft</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hyperf/" style="font-size: 13px;">Hyperf</a> <a href="/tags/Swoft/" style="font-size: 13.5px;">Swoft</a> <a href="/tags/XSS/" style="font-size: 13px;">XSS</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 13px;">安全</a> <a href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" style="font-size: 14px;">手把手教你</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-02-13/TODO/" class="title">遇到的新问题 , 先挖坑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-02-13T10:38:17.027Z" itemprop="datePublished">2023-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" class="title">一分钟搭建Hyperf</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-10T16:00:00.000Z" itemprop="datePublished">2019-07-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-09-26/swoft/Swoft%20%E5%A4%9A%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E9%85%8D%E7%BD%AE/" class="title">【手把手教你】Swoft 多库连接池配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-09-26T16:00:00.000Z" itemprop="datePublished">2018-09-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/" class="title">【手把手教你】自定义Swoft 注解和AOP</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-07-19T16:00:00.000Z" itemprop="datePublished">2018-07-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" class="title">记一次XSS漏洞(慕课网)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-06-28T16:00:00.000Z" itemprop="datePublished">2018-06-29</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-swoft/自定义Swoft 注解和AOP" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【手把手教你】自定义Swoft 注解和AOP
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/" class="article-date">
+	  <time datetime="2018-07-19T16:00:00.000Z" itemprop="datePublished">2018-07-20</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Swoft/" rel="tag">Swoft</a>, <a class="article-tag-link-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>前两篇关于<a href="/2018-06-07/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2">Swoft RPC 的使用教程</a>得到很多小伙伴的支持</p>
+<p>并且反映网上很多关于Swoft 的讲解太过于深♂入, 很多小伙伴看不懂</p>
+<p>这是很正常的, 因为开发者们对于使用难度的理解跟我们有些偏差</p>
+<p>身为开发者自然知道如何使用, 认为不需要讲解, 也就是所谓的<strong>知识的诅咒</strong></p>
+<p>所以很多关于Swoft 的讲解都是底层原理</p>
+<p>那在这我就开一个大佬们不屑的新手向讲解教程 (￣_ ￣ )</p>
+<p>叫做<code>[手把手教你]</code>系列</p>
+<p>只要跟着一点点练习, 熟练使用是没问题滴</p>
+<h1 id="前置技能"><a href="#前置技能" class="headerlink" title="前置技能"></a>前置技能</h1><ol>
+<li>会使用Swoft 的MVC</li>
+<li>使用了Swoft 的注解</li>
+<li>理解注解只是配置的另一种展现方式</li>
+<li>PHPStorm 安装了PHP Annotations 插件</li>
+</ol>
+<p>下面就让我们开始吧</p>
+<h1 id="注解类"><a href="#注解类" class="headerlink" title="注解类"></a>注解类</h1><p>想要定义一个注解是非常简单的</p>
+<p>新建注解类<code>app\Module\Test\Annotations\Test.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Annotations</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Annotation</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Target</span>(&quot;ALL&quot;)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> string 构造参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$name</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$values</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$values</span>[<span class="string">&#x27;name&#x27;</span>])) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;name = <span class="variable">$values</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>): <span class="title">string</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string $name</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setName</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$name</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;name = <span class="variable">$name</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有三点需要注意:</p>
+<p>1 类注解要加<code>@Annotation</code>, 用来声明这是一个注解类</p>
+<p>2 类名不需要加<code>Annotation</code>后缀</p>
+<p>3 类注解<code>@Target()</code>为<code>Doctrine\Common\Annotations\Annotation\Target.php</code>, 参数可以填ALL|CLASS|METHOD|PROPERTY|ANNOTATION, 表示该注解使用的级别, 类注解还是方法注解,属性注解,或者全部都能使用</p>
+<p>这样我们自定义的注解标签就完成了</p>
+<p>去<code>IndexController.php</code>里试一下</p>
+<p><img src="https://leanote.com/api/file/getImage?fileId=5b52dc8aab64414100000d1f" alt="title"></p>
+<p>注意不要忘记<code>use</code>我们的注解类</p>
+<p>注解类<code>Test</code>的<code>@Target</code>设置为<code>ALL</code>, 可以同时在类和方法上使用(属性也可以的)</p>
+<p>为了体现使用了注解, 可以在注解类<code>Test</code>的构造函数中进行输出<br><img src="https://leanote.com/api/file/getImage?fileId=5b52c3e5ab644142f5000912" alt="title"></p>
+<p>重启一下程序</p>
+<p><img src="https://leanote.com/api/file/getImage?fileId=5b52dcb0ab64414100000d28" alt="title"></p>
+<p>这样就是成功了, 输出多个是正常现象, 毕竟多进程, 也是<code>Swoft</code>高性能的原因</p>
+<h1 id="注解解析类-Parser"><a href="#注解解析类-Parser" class="headerlink" title="注解解析类 Parser"></a>注解解析类 Parser</h1><p>正如前置技能里所说</p>
+<p>注解只是配置的另一种展现方式</p>
+<p>任何逻辑都<strong>不要</strong>在注解类里处理</p>
+<p>新建注解解析类<code>app\Module\Test\Parser\TestParser.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Parser</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Collector</span>\<span class="title">TestCollector</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Parser</span>\<span class="title">AbstractParser</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestParser</span> <span class="keyword">extends</span> <span class="title">AbstractParser</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">parser</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$className</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="variable">$objectAnnotation</span> = <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$propertyName</span> = <span class="string">&#x27;&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$methodName</span> = <span class="string">&#x27;&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="variable">$propertyValue</span> = <span class="literal">null</span></span></span></span><br><span class="line"><span class="params"><span class="function">    </span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title class_">TestCollector</span>::<span class="title function_ invoke__">collect</span>(<span class="variable">$className</span>, <span class="variable">$objectAnnotation</span>, <span class="variable">$propertyName</span>, <span class="variable">$methodName</span>, <span class="variable">$propertyValue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下这几个参数的意义:</p>
+<blockquote>
+<p><code>$className</code> 当前注解所在的类名</p>
+<p><code>$objectAnnotation</code> 当前注解所实例化的注解类<code>new Test([name=&quot;666&quot;])</code></p>
+<p><code>$propertyName</code> 当前注解所在的属性名(如果是属性注解)</p>
+<p><code>$methodName</code> 当前注解所在的方法名(如果是方法注解)</p>
+<p><code>$propertyValue</code> 当前注解所在的属性(如果是属性注解)</p>
+</blockquote>
+<p>这里也不要处理逻辑, 因为此刻程序还处于初始化阶段, 没有请求数据</p>
+<p>注解解析类<code>Parser</code>只做了一件事, 就是把注解类存入注解收集类</p>
+<p>什么是注解收集类呢?</p>
+<h1 id="注解收集类-Collector"><a href="#注解收集类-Collector" class="headerlink" title="注解收集类 Collector"></a>注解收集类 Collector</h1><p>注解收集类<code>Collector</code>非常简单, 相当于一个全局数组方便我们后续处理而已</p>
+<p>新建注解收集类<code>app\Module\Test\Collector\TestCollector.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Collector</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">CollectorInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCollector</span> <span class="keyword">implements</span> <span class="title">CollectorInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$test</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">collect</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$className</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="variable">$objectAnnotation</span> = <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$propertyName</span> = <span class="string">&#x27;&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">string</span> <span class="variable">$methodName</span> = <span class="string">&#x27;&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="variable">$propertyValue</span> = <span class="literal">null</span></span></span></span><br><span class="line"><span class="params"><span class="function">    </span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">self</span>::<span class="variable">$test</span>[<span class="variable">$className</span>][<span class="variable">$methodName</span>] = <span class="variable">$objectAnnotation</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getCollector</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">self</span>::<span class="variable">$test</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正如所见, 只是存取<code>$objectAnnotation</code>注解实例, 方便我们后面使用</p>
+<p>本篇举例的是方法注解, 所以默认<code>$methodName</code>不为空</p>
+<p>注解收集类<code>Collector</code>被注解解析类<code>Parser</code>调用</p>
+<p>那注解解析类<code>Parser</code>被谁调用呢?</p>
+<h1 id="注解封装类-Wrapper"><a href="#注解封装类-Wrapper" class="headerlink" title="注解封装类 Wrapper"></a>注解封装类 Wrapper</h1><p>新建注解封装类<code>app\Module\Test\Wrapper\TestWrapper.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Wrapper</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Annotations</span>\<span class="title">Test</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Wrapper</span>\<span class="title">AbstractWrapper</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestWrapper</span> <span class="keyword">extends</span> <span class="title">AbstractWrapper</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> array 解析哪些注解(类级)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$classAnnotations</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> array 解析哪些注解(属性级)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$propertyAnnotations</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> array 解析哪些注解(方法级)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$methodAnnotations</span> = [</span><br><span class="line">        <span class="title class_">Test</span>::<span class="variable language_">class</span>,</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否解析类注解</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $annotations</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> bool</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">isParseClassAnnotations</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$annotations</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否解析属性注解</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $annotations</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> bool</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">isParsePropertyAnnotations</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$annotations</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否解析方法注解</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> array $annotations</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> bool</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">isParseMethodAnnotations</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$annotations</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们的类注解被实例化时, 会触发注解封装类<code>&#123;注解标签名&#125;Wrapper</code></p>
+<p>注解封装类<code>Wrapper</code>来决定是否触发注解解析类<code>Parser</code></p>
+<p>解释一下, 可能不好理解</p>
+<blockquote>
+<p>这里<code>isParseClassAnnotations</code> 返回<code>false</code>, 意味着<strong>类注解</strong>略过不解析;</p>
+<p>同理<code>isParsePropertyAnnotations</code> 返回<code>false</code>, <strong>属性注解</strong>略过不解析;</p>
+<p>而<code>isParseMethodAnnotations</code> 返回<code>true</code>,<br>那么对应的<code>$methodAnnotations</code>里的注解类全部触发解析,<br>这里的<code>Test::class</code>会触发对应的<code>TestParser</code>;</p>
+</blockquote>
+<p>抽象的说, 注解封装类<code>Wrapper</code>回答了两个问题: <code>是否解析</code>, <code>解析哪些</code></p>
+<p>具象的说, 这里的封装类<code>TestWrapper</code>回答的就是:”只解析方法注解<code>@Test</code>“</p>
+<p>可以在注解解析类<code>Parser</code>的构造方法中进行输出<br><img src="https://leanote.com/api/file/getImage?fileId=5b52e317ab64414100000f23" alt="title"></p>
+<p>重启程序, 我们来看一下!<br><img src="https://leanote.com/api/file/getImage?fileId=5b52e34bab64414100000f2f" alt="title"><br>这里可以看到, 在注解类<code>Test</code>里输出的内容还有类注解的<code>666</code>, 到了注解解析类<code>TestParser</code>, 就没有了<code>666</code>, 只有方法注解<code>777</code></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
+<p>实例化注解类<code>Test</code>, 询问注解封装类<code>TestWrapper</code>解析哪些注解</p>
+</blockquote>
+<blockquote>
+<p>注解封装类<code>TestWrapper</code>回答解析方法上的<code>Test</code>, 于是方法级的注解<code>Test</code>被注解解析类<code>TestParser</code>存进了注解收集类<code>TestCollector</code></p>
+</blockquote>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意!!!!"></a>注意!!!!</h3><h3 id="程序只会主动扫描类注解-然后扫描类注解Wrapper下指定的方法注解和属性注解"><a href="#程序只会主动扫描类注解-然后扫描类注解Wrapper下指定的方法注解和属性注解" class="headerlink" title="程序只会主动扫描类注解, 然后扫描类注解Wrapper下指定的方法注解和属性注解!!"></a>程序只会主动扫描类注解, 然后扫描类注解Wrapper下指定的方法注解和属性注解!!</h3><h3 id="如果你的方法注解不存在于任何类注解的Wrapper下-则是不会被解析的"><a href="#如果你的方法注解不存在于任何类注解的Wrapper下-则是不会被解析的" class="headerlink" title="如果你的方法注解不存在于任何类注解的Wrapper下, 则是不会被解析的!!"></a>如果你的方法注解不存在于任何类注解的Wrapper下, 则是不会被解析的!!</h3><h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><p>收集完毕下面举例如何使用</p>
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><p>新建中间件<code>app\Module\Test\Middlewares\TestMiddleware.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Middlewares</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Annotations</span>\<span class="title">Test</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Collector</span>\<span class="title">TestCollector</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Psr</span>\<span class="title">Http</span>\<span class="title">Message</span>\<span class="title">ResponseInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Psr</span>\<span class="title">Http</span>\<span class="title">Message</span>\<span class="title">ServerRequestInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Psr</span>\<span class="title">Http</span>\<span class="title">Server</span>\<span class="title">RequestHandlerInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">Bean</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Core</span>\<span class="title">RequestContext</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Http</span>\<span class="title">Message</span>\<span class="title">Middleware</span>\<span class="title">MiddlewareInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Bean</span>()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestMiddleware</span> <span class="keyword">implements</span> <span class="title">MiddlewareInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">ServerRequestInterface <span class="variable">$request</span>, RequestHandlerInterface <span class="variable">$handler</span></span>): <span class="title">ResponseInterface</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;in Middleware\n&quot;</span>;</span><br><span class="line">        <span class="variable">$response</span> = <span class="variable">$handler</span>-&gt;<span class="title function_ invoke__">handle</span>(<span class="variable">$request</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当前请求的控制器</span></span><br><span class="line">        <span class="variable">$controllerClass</span>  = <span class="title class_">RequestContext</span>::<span class="title function_ invoke__">getContextDataByKey</span>(<span class="string">&#x27;controllerClass&#x27;</span>);</span><br><span class="line">        <span class="comment">// 当前请求的方法</span></span><br><span class="line">        <span class="variable">$controllerAction</span> = <span class="title class_">RequestContext</span>::<span class="title function_ invoke__">getContextDataByKey</span>(<span class="string">&#x27;controllerAction&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$collector</span> = <span class="title class_">TestCollector</span>::<span class="title function_ invoke__">getCollector</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* <span class="doctag">@var</span> Test $test*/</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$test</span> = <span class="variable">$collector</span>[<span class="variable">$controllerClass</span>][<span class="variable">$controllerAction</span>])&#123;</span><br><span class="line">            <span class="title function_ invoke__">print_r</span>(<span class="variable">$test</span>-&gt;<span class="title function_ invoke__">getName</span>().<span class="string">&quot; in Middleware\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$response</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看到, 之前负责收集注解的注解收集类<code>TestCollector</code> 派上用处了, 可以非常方便的通过他获取到当前请求方法的注解信息</p>
+<p>这需要注意, <code>RequestContext::getContextDataByKey(&#39;controllerClass&#39;)</code>获取请求控制器的方法要在<code>$handler-&gt;handle($request)</code>后才有值, 因为负责路由的中间件还没执行到XD</p>
+<p><img src="https://leanote.com/api/file/getImage?fileId=5b52fa1bab64414100001286" alt="title"><br>切勿忘记<code>use</code> 中间件</p>
+<p>重启完访问一下试试<br><img src="https://leanote.com/api/file/getImage?fileId=5b52fe45ab6441410000130e" alt="title"></p>
+<h2 id="AOP-切面"><a href="#AOP-切面" class="headerlink" title="AOP 切面"></a>AOP 切面</h2><p>新建切面类<code>app\Module\Test\Aspect\TestAspect.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Module</span>\<span class="title class_">Test</span>\<span class="title class_">Aspect</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Collector</span>\<span class="title">TestCollector</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Aop</span>\<span class="title">ProceedingJoinPoint</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">Around</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">Aspect</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">PointAnnotation</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Module</span>\<span class="title">Test</span>\<span class="title">Annotations</span>\<span class="title">Test</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Core</span>\<span class="title">RequestContext</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试切面类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Aspect</span>()</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@PointAnnotation</span>(</span></span><br><span class="line"><span class="comment"> *      include=&#123;</span></span><br><span class="line"><span class="comment"> *          Test::class</span></span><br><span class="line"><span class="comment"> *      &#125;</span></span><br><span class="line"><span class="comment"> *  )</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@package</span> App\Module\Test\Aspect</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAspect</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Around</span>()</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ProceedingJoinPoint $proceedingJoinPoint</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">around</span>(<span class="params">ProceedingJoinPoint <span class="variable">$proceedingJoinPoint</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$controllerClass</span>  = <span class="title class_">RequestContext</span>::<span class="title function_ invoke__">getContextDataByKey</span>(<span class="string">&#x27;controllerClass&#x27;</span>);</span><br><span class="line">        <span class="variable">$controllerAction</span> = <span class="title class_">RequestContext</span>::<span class="title function_ invoke__">getContextDataByKey</span>(<span class="string">&#x27;controllerAction&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$collector</span> = <span class="title class_">TestCollector</span>::<span class="title function_ invoke__">getCollector</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* <span class="doctag">@var</span> Test $test*/</span></span><br><span class="line">        <span class="variable">$test</span> = <span class="variable">$collector</span>[<span class="variable">$controllerClass</span>][<span class="variable">$controllerAction</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$test</span>-&gt;<span class="title function_ invoke__">getName</span>(), <span class="string">&quot;around-before\n&quot;</span>;</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$proceedingJoinPoint</span>-&gt;<span class="title function_ invoke__">proceed</span>();</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$test</span>-&gt;<span class="title function_ invoke__">getName</span>(), <span class="string">&quot;around-after\n&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$result</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>@Aspect()</code> 声明这是一个切面类</p>
+<p><code>@PointAnnotation</code> 设置了注解切入点</p>
+<p><code>@Before()</code> 设置了通知点</p>
+</blockquote>
+<p>其他设置可以参考Swoft文档 <a target="_blank" rel="noopener" href="https://doc.swoft.org/master/zh-CN/core/aop/overview.html">AOP章节</a>;</p>
+<p>还需要改一下注解解析类<code>TestParser</code></p>
+<p>在<code>parser</code> 方法中加入<code>Collector::$methodAnnotations[$className][$methodName][] = get_class($objectAnnotation);</code><br><img src="https://leanote.com/api/file/getImage?fileId=5b52faa7ab64414100001297" alt="title"></p>
+<p>这一步的作用是将使用注解的方法加入到允许切入的数组, 只有在<code>Collector::$methodAnnotations</code>变量中存在的方法才会调用切面</p>
+<p>重启程序请求一下<br><img src="https://leanote.com/api/file/getImage?fileId=5b52fddfab644141000012f7" alt="title"></p>
+<h2 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h2><p>当然也可以在控制器用<br><img src="https://leanote.com/api/file/getImage?fileId=5b53009eab6441410000133c" alt="title"><br><img src="https://leanote.com/api/file/getImage?fileId=5b5300beab644142f500133a" alt="title"></p>
+<p>个人还是推荐用切面, 控制器里只需要加入注解即可</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://assert6.github.io/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/" title="【手把手教你】自定义Swoft 注解和AOP" target="_blank" rel="external">https://assert6.github.io/2018-07-19/swoft/自定义Swoft 注解和AOP/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/assert6" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://avatars.githubusercontent.com/u/28561563" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/assert6" target="_blank"><span class="text-dark">断言</span><small class="ml-1x">Hyperf 开发组成员</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018-09-26/swoft/Swoft%20%E5%A4%9A%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E9%85%8D%E7%BD%AE/" title="【手把手教你】Swoft 多库连接池配置"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" title="记一次XSS漏洞(慕课网)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 张城铭
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

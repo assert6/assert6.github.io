@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>【手把手教你】用Swoft 搭建微服务(TCP RPC)2 | 断言说</title>
+  <meta name="description" content="上一篇讲了如何用Swoft 搭建RPC 服务 本篇介绍如何使用微服务 微服务流程首先讲一下微服务的流程 弄清楚流程, 开发起来就行云流水 这是官方给出的目录结构 1234app&#x2F;  - Lib&#x2F;          &#x2F;&#x2F; 服务的公共接口定义目录，里面通常只有php接口类  - Pool&#x2F;         &#x2F;&#x2F; 服务池配置，里面可以配置不同服务的连接池，参考里面的 UserServicePool  -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【手把手教你】用Swoft 搭建微服务(TCP RPC)2">
+<meta property="og:url" content="https://assert6.github.io/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/index.html">
+<meta property="og:site_name" content="断言说">
+<meta property="og:description" content="上一篇讲了如何用Swoft 搭建RPC 服务 本篇介绍如何使用微服务 微服务流程首先讲一下微服务的流程 弄清楚流程, 开发起来就行云流水 这是官方给出的目录结构 1234app&#x2F;  - Lib&#x2F;          &#x2F;&#x2F; 服务的公共接口定义目录，里面通常只有php接口类  - Pool&#x2F;         &#x2F;&#x2F; 服务池配置，里面可以配置不同服务的连接池，参考里面的 UserServicePool  -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b17a847ab6441649600174a">
+<meta property="article:published_time" content="2018-06-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-13T10:38:17.027Z">
+<meta property="article:author" content="张城铭">
+<meta property="article:tag" content="手把手教你">
+<meta property="article:tag" content="Swoft">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leanote.com/api/file/getImage?fileId=5b17a847ab6441649600174a">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://assert6.github.io/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="断言说" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/assert6" target="_blank">
+          <img class="img-circle img-rotate" src="https://avatars.githubusercontent.com/u/28561563" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">断言</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Hyperf 开发组成员</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>断言怎么说</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hyperf/" rel="tag">Hyperf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swoft/" rel="tag">Swoft</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hyperf/" style="font-size: 13px;">Hyperf</a> <a href="/tags/Swoft/" style="font-size: 13.5px;">Swoft</a> <a href="/tags/XSS/" style="font-size: 13px;">XSS</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 13px;">安全</a> <a href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" style="font-size: 14px;">手把手教你</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-02-13/TODO/" class="title">遇到的新问题 , 先挖坑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-02-13T10:38:17.027Z" itemprop="datePublished">2023-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" class="title">一分钟搭建Hyperf</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-10T16:00:00.000Z" itemprop="datePublished">2019-07-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-09-26/swoft/Swoft%20%E5%A4%9A%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E9%85%8D%E7%BD%AE/" class="title">【手把手教你】Swoft 多库连接池配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-09-26T16:00:00.000Z" itemprop="datePublished">2018-09-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/" class="title">【手把手教你】自定义Swoft 注解和AOP</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-07-19T16:00:00.000Z" itemprop="datePublished">2018-07-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" class="title">记一次XSS漏洞(慕课网)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-06-28T16:00:00.000Z" itemprop="datePublished">2018-06-29</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-swoft/用Swoft 搭建微服务(TCP RPC)2" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【手把手教你】用Swoft 搭建微服务(TCP RPC)2
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/" class="article-date">
+	  <time datetime="2018-06-06T16:00:00.000Z" itemprop="datePublished">2018-06-07</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Swoft/" rel="tag">Swoft</a>, <a class="article-tag-link-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>上一篇讲了<a href="/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)">如何用Swoft 搭建RPC 服务</a></p>
+<p>本篇介绍如何使用微服务</p>
+<h2 id="微服务流程"><a href="#微服务流程" class="headerlink" title="微服务流程"></a>微服务流程</h2><p>首先讲一下微服务的流程</p>
+<p>弄清楚流程, 开发起来就行云流水</p>
+<p>这是官方给出的目录结构</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app/</span><br><span class="line">  - Lib/          // 服务的公共接口定义目录，里面通常只有php接口类</span><br><span class="line">  - Pool/         // 服务池配置，里面可以配置不同服务的连接池，参考里面的 UserServicePool</span><br><span class="line">  - Services/     // 具体的服务接口实现类，里面的类通常实现了 Lib 中定义的接口</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当然在多个服务中使用时， 要将lib库 app&#x2F;Lib移到一个公共的git仓库里，然后各个服务通过 composer 来获取使用</p>
+</blockquote>
+<p>这里有3个目录</p>
+<p><code>Lib</code> 是接口, 也是客户端和服务端必须的, 用来规定数据结构, 一般由服务端提供</p>
+<p>服务端还需要实现<code>Services</code>, 也就是相当于<code>Model</code> 层</p>
+<p>客户端可以通过配置<code>Pool</code> 来调用对应的<code>Services</code>, 如同调用自身的<code>Model</code> 一样方便</p>
+<p>整个流程不是很难理解, 但是官方把三个目录放在一起, 并且没有详细说明, 导致很多同学搞不清楚</p>
+<p>下面我们来写一个例子试一下吧</p>
+<h2 id="定义一个接口"><a href="#定义一个接口" class="headerlink" title="定义一个接口"></a>定义一个接口</h2><blockquote>
+<p>接口定义和普通接口完全一致，唯一不一样的是:</p>
+</blockquote>
+<ul>
+<li>需要在类注释上定义类似 <code>deferGetUser</code> 方法，对应类里面方法 <code>getUser</code> 且首字母大写。这种 <code>defer*</code> 方法，一般用于业务延迟收包和并发使用。</li>
+<li>这些方法是不需要实现的，仅用于提供IDE提示。内部调用逻辑由框架帮你完成</li>
+</ul>
+<p>在<code>app/Lib</code> 新建接口文件<code>MemberInterface</code></p>
+<p>定义一个<code>getMemberByID</code>方法, 并且根据官方提示, 在接口注释里定义一个<code>deferGetMemberByID</code> 方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Lib</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Core</span>\<span class="title">ResultInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@method</span> ResultInterface deferGetMemberByID(int $id)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MemberInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getMemberByID</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$id</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以了, 新建的<strong>每个方法</strong>都要在接口注释里加一个同名的<code>defer*</code>方法, 用来做延迟收包方法</p>
+<p>把接口文件复制到<code>swoft-http</code>的<code>app/Lib</code>里, 且之后接口文件若有变动, 都要报证相同</p>
+<h2 id="服务端实现Services"><a href="#服务端实现Services" class="headerlink" title="服务端实现Services"></a>服务端实现Services</h2><p>接口定义好了, 下面我们在Services 里实现这个接口</p>
+<p>在<code>app/Services</code> 新建类文件<code>MemberService</code>, 实现<code>MemberInterface</code> 接口, 并继承其注释</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Services</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Lib</span>\<span class="title">MemberInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Core</span>\<span class="title">ResultInterface</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@method</span> ResultInterface deferGetMemberByID(int $id)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Service</span>()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberService</span> <span class="keyword">implements</span> <span class="title">MemberInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getMemberByID</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$id</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> Implement getMemberByID() method.</span></span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            <span class="string">&quot;小红&quot;</span>,</span><br><span class="line">            <span class="string">&quot;小红1&quot;</span>,</span><br><span class="line">            <span class="string">&quot;小红2&quot;</span>,</span><br><span class="line">            <span class="string">&quot;小红3&quot;</span>,</span><br><span class="line">            <span class="string">&quot;小红4&quot;</span>,</span><br><span class="line">        ][<span class="variable">$id</span>] ?? <span class="string">&quot;查无此人&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意:</p>
+<blockquote>
+<p>注解里的<code>@Service()</code>默认为0, 用来区分接口的不同版本</p>
+</blockquote>
+<p>也就是你可以建多个类来实现这个接口, <code>@Service(version=&quot;1.0.1&quot;)</code> 版本号不同即可</p>
+<h2 id="客户端配置Pool"><a href="#客户端配置Pool" class="headerlink" title="客户端配置Pool"></a>客户端配置Pool</h2><p>服务端的<code>Service</code>实现就是这么简单</p>
+<p>反倒是客户端的连接池实现有些麻烦</p>
+<p>客户端连接池需要搞清两个问题:</p>
+<ol>
+<li>连谁?</li>
+<li>连什么?</li>
+</ol>
+<p><code>app/Pool/Config</code> 是连接池配置文件, 来解决第一个问题</p>
+<p>同一个连接我们可以用同一个连接池, 刚才在服务端只是新增了一个接口, 并不是新建了一个RPC 服务, 所以这里不需要改动(只是我懒)</p>
+<p>下面来解决第二个问题, 连什么?</p>
+<p>在<code>app/Controller</code> 里新建一个控制器<code>MemberController</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Controllers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Lib</span>\<span class="title">MemberInterface</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Http</span>\<span class="title">Server</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">Controller</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Http</span>\<span class="title">Server</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">RequestMapping</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Http</span>\<span class="title">Server</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">RequestMethod</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Swoft</span>\<span class="title">Rpc</span>\<span class="title">Client</span>\<span class="title">Bean</span>\<span class="title">Annotation</span>\<span class="title">Reference</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Controller</span>()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Reference</span>(name=&quot;user&quot;, version=&quot;0&quot;)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> MemberInterface</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$memberService</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@RequestMapping</span>(route=&quot;/member/&#123;mid&#125;&quot;, method=&#123;RequestMethod::GET&#125;)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getMemberByID</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$mid</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$result</span>  = <span class="variable language_">$this</span>-&gt;memberService-&gt;<span class="title function_ invoke__">getMemberByID</span>(<span class="variable">$mid</span>);</span><br><span class="line">        <span class="keyword">return</span> [<span class="variable">$result</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意成员</strong><code>memberService</code> 的注解</p>
+<ol>
+<li><code>@Reference(name=&quot;user&quot;)</code> 用来指定连接谁, <code>user</code> 是别名, 在<code>app/Lib/UserServicePool.php</code> 的<code>@Pool</code>注解里命名</li>
+<li><code>@var MemberInterface</code> 用来指定连接什么, 也就是哪个接口</li>
+<li><code>version=&quot;0&quot;</code> 用来指定该接口的某个版本, 在服务端<code>Services</code> 的注解里声明</li>
+</ol>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>打开连接<code>http://127.0.0.1:9501/member/2</code><br><img src="https://leanote.com/api/file/getImage?fileId=5b17a847ab6441649600174a" alt="title"><br>成功!</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://assert6.github.io/2018-06-06/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)2/" title="【手把手教你】用Swoft 搭建微服务(TCP RPC)2" target="_blank" rel="external">https://assert6.github.io/2018-06-06/swoft/用Swoft 搭建微服务(TCP RPC)2/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/assert6" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://avatars.githubusercontent.com/u/28561563" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/assert6" target="_blank"><span class="text-dark">断言</span><small class="ml-1x">Hyperf 开发组成员</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018-06-07/swoft/%E4%BD%BF%E7%94%A8TCP%20Client%20%E8%B0%83%E7%94%A8Swoft%20RPC%20%E6%9C%8D%E5%8A%A1/" title="【手把手教你】使用TCP Client 调用Swoft RPC 服务"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018-06-05/swoft/%E7%94%A8Swoft%20%E6%90%AD%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1(TCP%20RPC)/" title="【手把手教你】用Swoft 搭建微服务(TCP RPC)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 张城铭
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
