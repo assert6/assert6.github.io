@@ -1,0 +1,38 @@
+---
+title: 记一次XSS漏洞(慕课网)
+tags: [XSS, 安全]
+date: 2018-06-29
+---
+
+首先随便注册个账号进入到`手记`栏目, 也就是文章区
+
+点击右侧的写文章
+
+点击插入图片
+
+关键来了:
+
+![title](https://leanote.com/api/file/getImage?fileId=5b3720cbab64410bbf000fd5)
+
+图片描述这里, 是直接写入`img`标签的`title`字段的!
+
+这里我们可以尝试拼接`onload`来触发js
+
+![title](https://leanote.com/api/file/getImage?fileId=5b372163ab64410db6000ff6)
+
+而且最最傻逼的一点, `SESSIONID` 不是`httpOnly`, 意味着我们可以通过js 脚本读取到`SESSIONID`
+
+![title](https://leanote.com/api/file/getImage?fileId=5b3721aeab64410db6000ffa)
+
+随便发布一篇文章, 等待管理员审核
+
+成功拿到管理员账号
+
+![title](https://leanote.com/api/file/getImage?fileId=5b3721fdab64410bbf000fe9)
+
+更为讽刺的是, 该名管理员还在看XSS 安全视频...
+
+----------
+2018年7月2日更新
+不用尝试了, 已经反馈给官方, 已修复
+
