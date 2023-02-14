@@ -166,5 +166,5 @@ date: 2018-06-07
 
 ## 测试
 打开连接`http://127.0.0.1:9501/member/2`
-![title](https://leanote.com/api/file/getImage?fileId=5b17a847ab6441649600174a)
+![title](5b17a847ab6441649600174a.png)
 成功!

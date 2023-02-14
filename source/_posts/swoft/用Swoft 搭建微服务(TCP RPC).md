@@ -34,7 +34,7 @@ docker pull swoft/swoft
 ```
 
 非常的简单
-![title](https://leanote.com/api/file/getImage?fileId=5b17488cab644162a600088f)
+![title](5b17488cab644162a600088f.png)
 这样就是成功了
 
 为了方便理解
@@ -99,7 +99,7 @@ RPC 用到的配置
 docker run -it --rm -p 8099:8099 -v E:\WWW\swoft-rpc:/var/www/swoft  swoft/swoft /bin/bash
 ```
 这里用`-it`和`-v`方便调试
-![title](https://leanote.com/api/file/getImage?fileId=5b175328ab64416496000aa3)
+![title](5b175328ab64416496000aa3.png)
 这样就是成功启动了
 ## 启动RPC 服务
 
@@ -117,7 +117,7 @@ php bin/swoft rpc:start
 > 监听TCP 来实现RPC 服务
 
 就这样理解吧
-![title](https://leanote.com/api/file/getImage?fileId=5b17581bab64416496000b69)
+![title](5b17581bab64416496000b69.png)
 这样就是成功启动了
 
 ## 启动Web服务
@@ -135,7 +135,7 @@ docker run -it --rm -p 9501:80 -v E:\WWW\swoft-http:/var/www/swoft swoft/swoft /
 php bin/swoft server:start
 ```
 
-![title](https://leanote.com/api/file/getImage?fileId=5b175d89ab64416496000c3b)
+![title](5b175d89ab64416496000c3b.png)
 因为在之前把自动开启TCP 服务器禁用了
 
 所以显示Disabled
@@ -146,7 +146,7 @@ php bin/swoft server:start
 
 没问题的话, 可以看下官方提供的RPC demo `http://127.0.0.1:9501/rpc/call`
 
-![title](https://leanote.com/api/file/getImage?fileId=5b17a444ab644162a60016c5)
+![title](5b17a444ab644162a60016c5.png)
 
 大功告成!
 

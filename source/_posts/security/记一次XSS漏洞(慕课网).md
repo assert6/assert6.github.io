@@ -12,23 +12,23 @@ date: 2018-06-29
 
 关键来了:
 
-![title](https://leanote.com/api/file/getImage?fileId=5b3720cbab64410bbf000fd5)
+![title](5b3720cbab64410bbf000fd5.png)
 
 图片描述这里, 是直接写入`img`标签的`title`字段的!
 
 这里我们可以尝试拼接`onload`来触发js
 
-![title](https://leanote.com/api/file/getImage?fileId=5b372163ab64410db6000ff6)
+![title](5b372163ab64410db6000ff6.png)
 
 而且最最傻逼的一点, `SESSIONID` 不是`httpOnly`, 意味着我们可以通过js 脚本读取到`SESSIONID`
 
-![title](https://leanote.com/api/file/getImage?fileId=5b3721aeab64410db6000ffa)
+![title](5b3721aeab64410db6000ffa.png)
 
 随便发布一篇文章, 等待管理员审核
 
 成功拿到管理员账号
 
-![title](https://leanote.com/api/file/getImage?fileId=5b3721fdab64410bbf000fe9)
+![title](5b3721fdab64410bbf000fe9.png)
 
 更为讽刺的是, 该名管理员还在看XSS 安全视频...
 

@@ -89,18 +89,18 @@ date: 2018-07-20
 
 去`IndexController.php`里试一下
 
-![title](https://leanote.com/api/file/getImage?fileId=5b52dc8aab64414100000d1f)
+![title](5b52dc8aab64414100000d1f.png)
 
 注意不要忘记`use`我们的注解类
 
 注解类`Test`的`@Target`设置为`ALL`, 可以同时在类和方法上使用(属性也可以的)
 
 为了体现使用了注解, 可以在注解类`Test`的构造函数中进行输出
-![title](https://leanote.com/api/file/getImage?fileId=5b52c3e5ab644142f5000912)
+![title](5b52c3e5ab644142f5000912.png)
 
 重启一下程序
 
-![title](https://leanote.com/api/file/getImage?fileId=5b52dcb0ab64414100000d28)
+![title](5b52dcb0ab64414100000d28.png)
 
 这样就是成功了, 输出多个是正常现象, 毕竟多进程, 也是`Swoft`高性能的原因
 
@@ -275,10 +275,10 @@ date: 2018-07-20
 具象的说, 这里的封装类`TestWrapper`回答的就是:"只解析方法注解`@Test`"
 
 可以在注解解析类`Parser`的构造方法中进行输出
-![title](https://leanote.com/api/file/getImage?fileId=5b52e317ab64414100000f23)
+![title](5b52e317ab64414100000f23.png)
 
 重启程序, 我们来看一下!
-![title](https://leanote.com/api/file/getImage?fileId=5b52e34bab64414100000f2f)
+![title](5b52e34bab64414100000f2f.png)
 这里可以看到, 在注解类`Test`里输出的内容还有类注解的`666`, 到了注解解析类`TestParser`, 就没有了`666`, 只有方法注解`777`
 
 # 总结
@@ -340,11 +340,11 @@ date: 2018-07-20
 
 这需要注意, `RequestContext::getContextDataByKey('controllerClass')`获取请求控制器的方法要在`$handler->handle($request)`后才有值, 因为负责路由的中间件还没执行到XD
 
-![title](https://leanote.com/api/file/getImage?fileId=5b52fa1bab64414100001286)
+![title](5b52fa1bab64414100001286.png)
 切勿忘记`use` 中间件
 
 重启完访问一下试试
-![title](https://leanote.com/api/file/getImage?fileId=5b52fe45ab6441410000130e)
+![title](5b52fe45ab6441410000130e.png)
 
 ## AOP 切面
 新建切面类`app\Module\Test\Aspect\TestAspect.php`
@@ -407,15 +407,15 @@ date: 2018-07-20
 还需要改一下注解解析类`TestParser`
 
 在`parser` 方法中加入`Collector::$methodAnnotations[$className][$methodName][] = get_class($objectAnnotation);`
-![title](https://leanote.com/api/file/getImage?fileId=5b52faa7ab64414100001297)
+![title](5b52faa7ab64414100001297.png)
 
 这一步的作用是将使用注解的方法加入到允许切入的数组, 只有在`Collector::$methodAnnotations`变量中存在的方法才会调用切面
 
 重启程序请求一下
-![title](https://leanote.com/api/file/getImage?fileId=5b52fddfab644141000012f7)
+![title](5b52fddfab644141000012f7.png)
 ## 控制器
 当然也可以在控制器用
-![title](https://leanote.com/api/file/getImage?fileId=5b53009eab6441410000133c)
-![title](https://leanote.com/api/file/getImage?fileId=5b5300beab644142f500133a)
+![title](5b53009eab6441410000133c.png)
+![title](5b5300beab644142f500133a.png)
 
 个人还是推荐用切面, 控制器里只需要加入注解即可

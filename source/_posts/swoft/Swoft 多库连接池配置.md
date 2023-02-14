@@ -30,7 +30,7 @@ date: 2018-09-27
 ```
 
 加完如下
-![title](https://leanote.com/api/file/getImage?fileId=5baee7bbab644173f20008d1)
+![title](5baee7bbab644173f20008d1.png)
 
 > 默认的`master`和`slave`应为`default`下的配置, 为了兼容历史版本
 
