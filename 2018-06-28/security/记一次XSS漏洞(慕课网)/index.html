@@ -25,17 +25,17 @@
 <meta property="og:site_name" content="断言说">
 <meta property="og:description" content="首先随便注册个账号进入到手记栏目, 也就是文章区 点击右侧的写文章 点击插入图片 关键来了:  图片描述这里, 是直接写入img标签的title字段的! 这里我们可以尝试拼接onload来触发js  而且最最傻逼的一点, SESSIONID 不是httpOnly, 意味着我们可以通过js 脚本读取到SESSIONID  随便发布一篇文章, 等待管理员审核 成功拿到管理员账号  更为讽刺的是, 该名">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b3720cbab64410bbf000fd5">
-<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b372163ab64410db6000ff6">
-<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b3721aeab64410db6000ffa">
-<meta property="og:image" content="https://leanote.com/api/file/getImage?fileId=5b3721fdab64410bbf000fe9">
+<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png">
+<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b372163ab64410db6000ff6.png">
+<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721aeab64410db6000ffa.png">
+<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721fdab64410bbf000fe9.png">
 <meta property="article:published_time" content="2018-06-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-13T10:38:17.027Z">
+<meta property="article:modified_time" content="2023-02-14T07:36:49.417Z">
 <meta property="article:author" content="张城铭">
 <meta property="article:tag" content="XSS">
 <meta property="article:tag" content="安全">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://leanote.com/api/file/getImage?fileId=5b3720cbab64410bbf000fd5">
+<meta name="twitter:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/index.html">
   
@@ -218,10 +218,10 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023-02-13/TODO/" class="title">遇到的新问题 , 先挖坑</a>
+                <a href="/2023-02-14/TODO/" class="title">遇到的新问题 , 先挖坑</a>
               </p>
               <p class="item-date">
-                <time datetime="2023-02-13T10:38:17.027Z" itemprop="datePublished">2023-02-13</time>
+                <time datetime="2023-02-14T07:36:49.417Z" itemprop="datePublished">2023-02-14</time>
               </p>
             </div>
           </li>
@@ -338,15 +338,15 @@
 <p>点击右侧的写文章</p>
 <p>点击插入图片</p>
 <p>关键来了:</p>
-<p><img src="https://leanote.com/api/file/getImage?fileId=5b3720cbab64410bbf000fd5" alt="title"></p>
+<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png" alt="title"></p>
 <p>图片描述这里, 是直接写入<code>img</code>标签的<code>title</code>字段的!</p>
 <p>这里我们可以尝试拼接<code>onload</code>来触发js</p>
-<p><img src="https://leanote.com/api/file/getImage?fileId=5b372163ab64410db6000ff6" alt="title"></p>
+<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b372163ab64410db6000ff6.png" alt="title"></p>
 <p>而且最最傻逼的一点, <code>SESSIONID</code> 不是<code>httpOnly</code>, 意味着我们可以通过js 脚本读取到<code>SESSIONID</code></p>
-<p><img src="https://leanote.com/api/file/getImage?fileId=5b3721aeab64410db6000ffa" alt="title"></p>
+<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721aeab64410db6000ffa.png" alt="title"></p>
 <p>随便发布一篇文章, 等待管理员审核</p>
 <p>成功拿到管理员账号</p>
-<p><img src="https://leanote.com/api/file/getImage?fileId=5b3721fdab64410bbf000fe9" alt="title"></p>
+<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721fdab64410bbf000fe9.png" alt="title"></p>
 <p>更为讽刺的是, 该名管理员还在看XSS 安全视频…</p>
 <hr>
 <p>2018年7月2日更新<br>不用尝试了, 已经反馈给官方, 已修复</p>
