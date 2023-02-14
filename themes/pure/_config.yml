@@ -91,11 +91,11 @@ donate:
   enable: true
   # 微信打赏
   wechatpay:
-    qrcode: images/donate/wechatpayimg.png
+    qrcode: about/index/wechatpayimg.jpg
     title: 微信支付
   # 支付宝打赏
   alipay: 
-    qrcode: images/donate/alipayimg.png 
+    qrcode: about/index/alipayimg.jpg
     title: 支付宝
 
 # Share
@@ -141,8 +141,8 @@ comment:
     language: zh-CN
     
   valine: # Valine. https://valine.js.org
-    appid:  # your leancloud application appid
-    appkey:  # your leancloud application appkey
+    appid: 'hiY1arwpygW2djZWZ4DZ73GZ-gzGzoHsz' # your leancloud application appid
+    appkey: 'teiwZSzpQ4BdurxeURpiTnYs'  # your leancloud application appkey
     notify: false # mail notifier , https://github.com/xCss/Valine/wiki
     verify: false # Verification code
     placeholder: Just go go # comment box placeholder
