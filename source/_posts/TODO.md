@@ -14,3 +14,7 @@ title: 遇到的新问题 , 先挖坑
 ---
 [casperjs](http://docs.casperjs.org/en/latest/modules/casper.html)
 
+--- 
+FPM 迁移Hyperf 解决方案
+
+---
