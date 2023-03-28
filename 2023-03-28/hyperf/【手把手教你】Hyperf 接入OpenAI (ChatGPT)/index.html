@@ -17,27 +17,25 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>记一次XSS漏洞(慕课网) | 断言说</title>
-  <meta name="description" content="首先随便注册个账号进入到手记栏目, 也就是文章区 点击右侧的写文章 点击插入图片 关键来了:  图片描述这里, 是直接写入img标签的title字段的! 这里我们可以尝试拼接onload来触发js  而且最最傻逼的一点, SESSIONID 不是httpOnly, 意味着我们可以通过js 脚本读取到SESSIONID  随便发布一篇文章, 等待管理员审核 成功拿到管理员账号  更为讽刺的是, 该名">
+  <title>【手把手教你】Hyperf 接入OpenAI ChatGPT | 断言说</title>
+  <meta name="description" content="OpenAI 是什么OpenAI是一家致力于人工智能研究和发展的公司，其目标是创建普适人工智能，能够为人类创造更加繁荣、安全和可持续的未来。 为了实现这一目标，OpenAI不仅开展基础研究，还提供各种人工智能相关的工具和服务，包括API接口，以方便开发者快速应用最新的人工智能技术。 OpenAI APIOpenAI API是一种面向开发者的人工智能服务，提供各种语言模型和自然语言处理工具。开发者可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记一次XSS漏洞(慕课网)">
-<meta property="og:url" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/index.html">
+<meta property="og:title" content="【手把手教你】Hyperf 接入OpenAI ChatGPT">
+<meta property="og:url" content="https://assert6.github.io/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/index.html">
 <meta property="og:site_name" content="断言说">
-<meta property="og:description" content="首先随便注册个账号进入到手记栏目, 也就是文章区 点击右侧的写文章 点击插入图片 关键来了:  图片描述这里, 是直接写入img标签的title字段的! 这里我们可以尝试拼接onload来触发js  而且最最傻逼的一点, SESSIONID 不是httpOnly, 意味着我们可以通过js 脚本读取到SESSIONID  随便发布一篇文章, 等待管理员审核 成功拿到管理员账号  更为讽刺的是, 该名">
+<meta property="og:description" content="OpenAI 是什么OpenAI是一家致力于人工智能研究和发展的公司，其目标是创建普适人工智能，能够为人类创造更加繁荣、安全和可持续的未来。 为了实现这一目标，OpenAI不仅开展基础研究，还提供各种人工智能相关的工具和服务，包括API接口，以方便开发者快速应用最新的人工智能技术。 OpenAI APIOpenAI API是一种面向开发者的人工智能服务，提供各种语言模型和自然语言处理工具。开发者可">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png">
-<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b372163ab64410db6000ff6.png">
-<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721aeab64410db6000ffa.png">
-<meta property="og:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721fdab64410bbf000fe9.png">
-<meta property="article:published_time" content="2018-06-28T16:00:00.000Z">
+<meta property="og:image" content="https://assert6.github.io/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/img.png">
+<meta property="article:published_time" content="2023-03-28T08:44:15.673Z">
 <meta property="article:modified_time" content="2023-03-28T08:44:15.677Z">
 <meta property="article:author" content="张城铭">
-<meta property="article:tag" content="XSS">
-<meta property="article:tag" content="安全">
+<meta property="article:tag" content="Hyperf">
+<meta property="article:tag" content="ChatGPT">
+<meta property="article:tag" content="OpenAI">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png">
+<meta name="twitter:image" content="https://assert6.github.io/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/img.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/index.html">
+  <link rel="canonical" href="https://assert6.github.io/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/index.html">
   
     <link rel="alternate" href="/atom.xml" title="断言说" type="application/atom+xml">
   
@@ -299,14 +297,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-security/记一次XSS漏洞(慕课网)" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-hyperf/【手把手教你】Hyperf 接入OpenAI (ChatGPT)" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      记一次XSS漏洞(慕课网)
+      【手把手教你】Hyperf 接入OpenAI ChatGPT
     </h1>
   
 
@@ -314,15 +312,15 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" class="article-date">
-	  <time datetime="2018-06-28T16:00:00.000Z" itemprop="datePublished">2018-06-29</time>
+	<a href="/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/" class="article-date">
+	  <time datetime="2023-03-28T08:44:15.673Z" itemprop="datePublished">2023-03-28</time>
 	</a>
 </span>
         
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/tags/XSS/" rel="tag">XSS</a>, <a class="article-tag-link-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a>
+	<a class="article-tag-link-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a>, <a class="article-tag-link-link" href="/tags/Hyperf/" rel="tag">Hyperf</a>, <a class="article-tag-link-link" href="/tags/OpenAI/" rel="tag">OpenAI</a>
   </span>
 
 
@@ -330,33 +328,60 @@
 
 	<span class="article-read hidden-xs">
     	<i class="icon icon-eye-fill" aria-hidden="true"></i>
-    	<span id="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" class="leancloud_visitors"  data-flag-title="记一次XSS漏洞(慕课网)">
+    	<span id="/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/" class="leancloud_visitors"  data-flag-title="【手把手教你】Hyperf 接入OpenAI ChatGPT">
 			<span class="leancloud-visitors-count">0</span>
 		</span>
     </span>
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>首先随便注册个账号进入到<code>手记</code>栏目, 也就是文章区</p>
-<p>点击右侧的写文章</p>
-<p>点击插入图片</p>
-<p>关键来了:</p>
-<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3720cbab64410bbf000fd5.png" alt="title"></p>
-<p>图片描述这里, 是直接写入<code>img</code>标签的<code>title</code>字段的!</p>
-<p>这里我们可以尝试拼接<code>onload</code>来触发js</p>
-<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b372163ab64410db6000ff6.png" alt="title"></p>
-<p>而且最最傻逼的一点, <code>SESSIONID</code> 不是<code>httpOnly</code>, 意味着我们可以通过js 脚本读取到<code>SESSIONID</code></p>
-<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721aeab64410db6000ffa.png" alt="title"></p>
-<p>随便发布一篇文章, 等待管理员审核</p>
-<p>成功拿到管理员账号</p>
-<p><img src="/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/5b3721fdab64410bbf000fe9.png" alt="title"></p>
-<p>更为讽刺的是, 该名管理员还在看XSS 安全视频…</p>
-<hr>
-<p>2018年7月2日更新<br>不用尝试了, 已经反馈给官方, 已修复</p>
+        <h1 id="OpenAI-是什么"><a href="#OpenAI-是什么" class="headerlink" title="OpenAI 是什么"></a>OpenAI 是什么</h1><p>OpenAI是一家致力于人工智能研究和发展的公司，其目标是创建普适人工智能，能够为人类创造更加繁荣、安全和可持续的未来。</p>
+<p>为了实现这一目标，OpenAI不仅开展基础研究，还提供各种人工智能相关的工具和服务，包括API接口，以方便开发者快速应用最新的人工智能技术。</p>
+<h2 id="OpenAI-API"><a href="#OpenAI-API" class="headerlink" title="OpenAI API"></a>OpenAI API</h2><p>OpenAI API是一种面向开发者的人工智能服务，提供各种语言模型和自然语言处理工具。开发者可以使用OpenAI API来创建智能应用程序，例如聊天机器人、文本摘要器和情感分析器等。</p>
+<p>目前，OpenAI API提供了以下几种模型：</p>
+<ul>
+<li>GPT-3：目前最大的语言模型，可生成高质量的自然语言文本。</li>
+<li>DALL-E：一种基于GPT-3的图像生成模型，可以根据文本输入生成独特的图像。</li>
+<li>CLIP：一种视觉模型，可以通过图片识别标签和描述，用于图像分类、搜索和相似度匹配。</li>
+<li>Codex：一个基于GPT-3的代码生成模型，可以通过简短的自然语言指令生成代码。</li>
+<li>Triton：一种用于推荐系统和个性化推荐的模型。<br>使用OpenAI API需要先注册一个开发者账户并创建API密钥。注册成功后，开发者可以使用API密钥来调用OpenAI API提供的各种服务。</li>
+</ul>
+<h2 id="接入OpenAI-API"><a href="#接入OpenAI-API" class="headerlink" title="接入OpenAI API"></a>接入OpenAI API</h2><p>以下是接入OpenAI API的一般步骤：</p>
+<ol>
+<li><p>注册开发者账户并创建API密钥。在OpenAI网站上注册并创建一个API密钥，用于调用API服务。</p>
+</li>
+<li><p>安装OpenAI API SDK。OpenAI提供了各种语言的SDK，包括Python、JavaScript、Java、Ruby等，开发者可以选择适合自己的SDK进行安装。</p>
+</li>
+<li><p>调用API服务。使用SDK提供的API接口和密钥，开发者可以调用OpenAI API提供的各种服务。</p>
+</li>
+</ol>
+<blockquote>
+<blockquote>
+<blockquote>
+<p><strong>注意, 以上全部是由OpenAI ChatGPT生成</strong></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="Hyperf-接入OpenAI"><a href="#Hyperf-接入OpenAI" class="headerlink" title="Hyperf 接入OpenAI"></a>Hyperf 接入OpenAI</h1><p>接入OpenAI 的步骤非常简单, 上面ChatGPT 也已经给出了大概步骤, 下面举例展示一下, 重点在于类似ChatGPT 逐字回复的<code>EventStream</code> 的实现.</p>
+<h2 id="生成API密钥"><a href="#生成API密钥" class="headerlink" title="生成API密钥"></a>生成API密钥</h2><p>我们需要在OpenAI官网注册一个账号, 然后生成一个<a target="_blank" rel="noopener" href="https://platform.openai.com/account/api-keys">API密钥</a>, 保存好后面会用到, 注册账号的教程非常多, 这里就不再赘述了.</p>
+<h2 id="安装OpenAI-SDK"><a href="#安装OpenAI-SDK" class="headerlink" title="安装OpenAI SDK"></a>安装OpenAI SDK</h2><p>OpenAI 官方提供了<a target="_blank" rel="noopener" href="https://github.com/openai-php/client">PHP SDK</a>, 但要求PHP 8.1+ 版本, 满足要求的话可以直接安装使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require openai-php/client</span><br></pre></td></tr></table></figure>
+<p>或者基于Hyperf 封装的<a target="_blank" rel="noopener" href="https://github.com/friendsofhyperf/openai-client">Client组件</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require friendsofhyperf/openai-client</span><br></pre></td></tr></table></figure>
+
+<p>SDK 代码非常清晰, 这里以官方SDK为例, 创建Client 配置参数即可请求OpenAI, 各个参数的含义可以参考<a target="_blank" rel="noopener" href="https://platform.openai.com/docs/api-reference/completions/create">官方文档</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$client</span> = OpenAI::<span class="title function_ invoke__">client</span>(<span class="string">&#x27;替换第一步生成的API密钥&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$response</span> = <span class="variable">$client</span>-&gt;<span class="title function_ invoke__">completions</span>()-&gt;<span class="title function_ invoke__">create</span>([</span><br><span class="line">        <span class="string">&#x27;model&#x27;</span> =&gt; <span class="string">&#x27;text-davinci-003&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;prompt&#x27;</span> =&gt; <span class="string">&#x27;Hyperf 是什么?&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;max_tokens&#x27;</span> =&gt; <span class="number">2048</span>,</span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$response</span>-&gt;<span class="title function_ invoke__">toArray</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动Hyperf 后调用一下, 就可以看到OpenAI 的回复了<br><img src="/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/img.png" alt="响应"></p>
+<h2 id="逐字回复-EventStream"><a href="#逐字回复-EventStream" class="headerlink" title="逐字回复 EventStream"></a>逐字回复 EventStream</h2><p>完成上面的步骤后, 会发现等待响应大概6秒左右特别久, 是因为我们同步阻塞等待OpenAI 所有响应, 在全部发送给客户端,<br>而ChatGPT 采用了<code>EventStream</code>可以异步响应逐字回复, 所以在等待回复时可以看到ChatGPT 正在处理请求, 这样体验会更好一些.<br>同样Hyperf <a target="_blank" rel="noopener" href="https://github.com/hyperf/engine/pull/16">最新版本</a>也支持了<code>EventStream</code>, 可以非常方便的实现逐字回复.<br>稍微修改下上面的代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$client</span> = OpenAI::<span class="title function_ invoke__">client</span>(<span class="string">&#x27;替换第一步生成的API密钥&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注意这里改为了createStreamed 方法</span></span><br><span class="line">    <span class="variable">$response</span> = <span class="variable">$client</span>-&gt;<span class="title function_ invoke__">completions</span>()-&gt;<span class="title function_ invoke__">createStreamed</span>([</span><br><span class="line">        <span class="string">&#x27;model&#x27;</span> =&gt; <span class="string">&#x27;text-davinci-003&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;prompt&#x27;</span> =&gt; <span class="string">&#x27;Hyperf 是什么?&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;max_tokens&#x27;</span> =&gt; <span class="number">2048</span>,</span><br><span class="line">    ]);</span><br><span class="line">    <span class="variable">$response</span> = <span class="title class_">ApplicationContext</span>::<span class="title function_ invoke__">getContainer</span>()-&gt;<span class="title function_ invoke__">get</span>(<span class="title class_">ResponseInterface</span>::<span class="variable language_">class</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果没有\Hyperf\Engine\Http\EventStream, 请composer update 更新engine 到最新版本</span></span><br><span class="line">    <span class="variable">$eventStream</span> = <span class="keyword">new</span> <span class="title class_">\Hyperf\Engine\Http\EventStream</span>(<span class="variable">$response</span>-&gt;<span class="title function_ invoke__">getConnection</span>());</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="variable">$response</span> <span class="keyword">as</span> <span class="variable">$stream</span>) &#123;</span><br><span class="line">        <span class="variable">$eventStream</span>-&gt;<span class="title function_ invoke__">write</span>(<span class="variable">$stream</span>[<span class="string">&#x27;choices&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;text&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$eventStream</span>-&gt;<span class="title function_ invoke__">end</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意代码改动了三处, 其中第一处是<code>create</code> 方法改为<code>createStreamed</code> 方法, 第二处是去掉了返回值<code>return $response-&gt;toArray()</code>, 第三处是使用<code>EventStream</code> 逐字响应.<br>启动Hyperf 后调用一下, 就可以看到OpenAI 的回复了, 并且可以看到逐字响应的效果:</p>
+<blockquote>
+<p>等我截个图</p>
+</blockquote>
 
       
     </div>
@@ -366,7 +391,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://assert6.github.io/2018-06-28/security/%E8%AE%B0%E4%B8%80%E6%AC%A1XSS%E6%BC%8F%E6%B4%9E(%E6%85%95%E8%AF%BE%E7%BD%91)/" title="记一次XSS漏洞(慕课网)" target="_blank" rel="external">https://assert6.github.io/2018-06-28/security/记一次XSS漏洞(慕课网)/</a>
+      <a href="https://assert6.github.io/2023-03-28/hyperf/%E3%80%90%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E3%80%91Hyperf%20%E6%8E%A5%E5%85%A5OpenAI%20(ChatGPT)/" title="【手把手教你】Hyperf 接入OpenAI ChatGPT" target="_blank" rel="external">https://assert6.github.io/2023-03-28/hyperf/【手把手教你】Hyperf 接入OpenAI (ChatGPT)/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -413,12 +438,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2018-07-19/swoft/%E8%87%AA%E5%AE%9A%E4%B9%89Swoft%20%E6%B3%A8%E8%A7%A3%E5%92%8CAOP/" title="【手把手教你】自定义Swoft 注解和AOP"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2023-03-28/hyperf/Windows%20%E5%8E%9F%E7%94%9F%E7%8E%AF%E5%A2%83%E5%BC%80%E5%8F%91Hyperf/" title="Windows 原生环境开发Hyperf"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2018-06-07/swoft/%E4%BD%BF%E7%94%A8TCP%20Client%20%E8%B0%83%E7%94%A8Swoft%20RPC%20%E6%9C%8D%E5%8A%A1/" title="【手把手教你】使用TCP Client 调用Swoft RPC 服务"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" title="一分钟搭建Hyperf"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
