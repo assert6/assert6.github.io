@@ -1,6 +1,7 @@
 ---
 title: Windows 原生环境开发Hyperf
 tags: [Hyperf, Box, Windows]
+date: 2021-02-28
 ---
 
 很多同学在开发Hyperf 时, 会选择使用Docker, 但是Docker 在Windows 下的体验并不是很好, 有时候会出现各种各样的问题, 本文将介绍如何在Windows 原生环境下开发Hyperf
