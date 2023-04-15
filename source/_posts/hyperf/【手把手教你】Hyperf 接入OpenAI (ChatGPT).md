@@ -77,16 +77,19 @@ SDK 代码非常清晰, 这里以官方SDK为例, 创建Client 配置参数即�
         $client = OpenAI::client('替换第一步生成的API密钥');
 
         // 注意这里改为了createStreamed 方法
-        $response = $client->completions()->createStreamed([
+        $result = $client->completions()->createStreamed([
             'model' => 'text-davinci-003',
             'prompt' => 'Hyperf 是什么?',
             'max_tokens' => 2048,
         ]);
-        $response = ApplicationContext::getContainer()->get(ResponseInterface::class);
         
-        // 如果没有\Hyperf\Engine\Http\EventStream, 请composer update 更新engine 到最新版本
+        // 如果报错Argument #1 ($connection) must be of type Hyperf\Engine\Contract\Http\Writable
+        // 或者没有\Hyperf\Engine\Http\EventStream
+        // 请更新engine(v1.10.0或v2.8.0)、engine-contract(v1.7.0)、hyperf/http-server(v3.0.14)
+        $response = ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\ResponseInterface::class);
+        
         $eventStream = new \Hyperf\Engine\Http\EventStream($response->getConnection());
-        foreach ($response as $stream) {
+        foreach ($result as $stream) {
             $eventStream->write($stream['choices'][0]['text']);
         }
         $eventStream->end();
