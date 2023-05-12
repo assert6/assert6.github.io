@@ -1,7 +1,7 @@
 ---
 title: 【手把手教你】Hyperf 接入OpenAI ChatGPT
 tags: [Hyperf, ChatGPT, OpenAI]
-date: 2021-03-28
+date: 2023-03-28
 ---
 
 # OpenAI 是什么
@@ -100,4 +100,4 @@ SDK 代码非常清晰, 这里以官方SDK为例, 创建Client 配置参数即�
 
 ![响应](./eventStream.gif)
 
-
+PS: [mozilla EventStream 格式](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#%E4%BA%8B%E4%BB%B6%E6%B5%81%E6%A0%BC%E5%BC%8F) 
