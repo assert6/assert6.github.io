@@ -1,5 +1,5 @@
 ---
-title: 【优雅范式】Hyperf 入门到精通04
+title: 【优雅范式】Hyperf 入门到精通05
 tags: [Hyperf]
 date: 2023-09-15
 ---
