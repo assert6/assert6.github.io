@@ -17,31 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>一分钟搭建Hyperf | 断言说-断言很溜</title>
-  <meta name="description" content="前置依赖 Docker Git PHPStorm  计时开始1.下载Hyperf Docker 镜像1docker pull hyperf&#x2F;hyperf   2.下载Hyperf1git clone https:&#x2F;&#x2F;github.com&#x2F;hyperf&#x2F;hyperf-skeleton.git   3.等待下载完成 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;">
+  <title>【注解】Hyperf 入门到精通01 | 断言说-断言很溜</title>
+  <meta name="description" content="注解 Annotation &#x2F; AttributePHP8 之前注解称之为Annotation使用doctrine&#x2F;annotations组件, 通过特定文本格式@Class解析内容, 已经淘汰这里不展开 12345678910use Hyperf\HttpServer\Annotation\Controller;&#x2F;** * @Controller(...) *&#x2F;class IndexC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一分钟搭建Hyperf">
-<meta property="og:url" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/index.html">
+<meta property="og:title" content="【注解】Hyperf 入门到精通01">
+<meta property="og:url" content="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/index.html">
 <meta property="og:site_name" content="断言说-断言很溜">
-<meta property="og:description" content="前置依赖 Docker Git PHPStorm  计时开始1.下载Hyperf Docker 镜像1docker pull hyperf&#x2F;hyperf   2.下载Hyperf1git clone https:&#x2F;&#x2F;github.com&#x2F;hyperf&#x2F;hyperf-skeleton.git   3.等待下载完成 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;">
+<meta property="og:description" content="注解 Annotation &#x2F; AttributePHP8 之前注解称之为Annotation使用doctrine&#x2F;annotations组件, 通过特定文本格式@Class解析内容, 已经淘汰这里不展开 12345678910use Hyperf\HttpServer\Annotation\Controller;&#x2F;** * @Controller(...) *&#x2F;class IndexC">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d272e3cab6441760500347f.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d272edbab6441760500349c.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273552ab644178040035bf.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d2732c3ab64417804003538.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d27367eab644176050035ff.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d27381cab6441760500366d.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273a40ab644176050036d7.png">
-<meta property="og:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273b0fab6441760500370a.png">
-<meta property="article:published_time" content="2019-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-15T06:45:54.361Z">
+<meta property="article:published_time" content="2023-09-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-15T06:45:54.353Z">
 <meta property="article:author" content="张城铭">
 <meta property="article:tag" content="Hyperf">
-<meta property="article:tag" content="手把手教你">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d272e3cab6441760500347f.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/index.html">
+  <link rel="canonical" href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/index.html">
   
     <link rel="alternate" href="/atom.xml" title="断言说-断言很溜" type="application/atom+xml">
   
@@ -303,14 +293,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-一分钟搭建Hyperf" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-hyperf/Hyperf 入门到精通/【注解】Hyperf 入门到精通01" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      一分钟搭建Hyperf
+      【注解】Hyperf 入门到精通01
     </h1>
   
 
@@ -318,15 +308,15 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" class="article-date">
-	  <time datetime="2019-07-10T16:00:00.000Z" itemprop="datePublished">2019-07-11</time>
+	<a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/" class="article-date">
+	  <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
 	</a>
 </span>
         
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/tags/Hyperf/" rel="tag">Hyperf</a>, <a class="article-tag-link-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a>
+	<a class="article-tag-link-link" href="/tags/Hyperf/" rel="tag">Hyperf</a>
   </span>
 
 
@@ -334,49 +324,39 @@
 
 	<span class="article-read hidden-xs">
     	<i class="icon icon-eye-fill" aria-hidden="true"></i>
-    	<span id="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" class="leancloud_visitors"  data-flag-title="一分钟搭建Hyperf">
+    	<span id="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/" class="leancloud_visitors"  data-flag-title="【注解】Hyperf 入门到精通01">
 			<span class="leancloud-visitors-count">0</span>
 		</span>
     </span>
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="前置依赖"><a href="#前置依赖" class="headerlink" title="前置依赖"></a>前置依赖</h1><ol>
-<li>Docker</li>
-<li>Git</li>
-<li>PHPStorm</li>
-</ol>
-<h1 id="计时开始"><a href="#计时开始" class="headerlink" title="计时开始"></a>计时开始</h1><h3 id="1-下载Hyperf-Docker-镜像"><a href="#1-下载Hyperf-Docker-镜像" class="headerlink" title="1.下载Hyperf Docker 镜像"></a>1.下载Hyperf Docker 镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hyperf/hyperf</span><br></pre></td></tr></table></figure>
+        <h1 id="注解-Annotation-x2F-Attribute"><a href="#注解-Annotation-x2F-Attribute" class="headerlink" title="注解 Annotation &#x2F; Attribute"></a>注解 Annotation &#x2F; Attribute</h1><p>PHP8 之前注解称之为Annotation<br>使用<code>doctrine/annotations</code>组件, 通过特定文本格式<code>@Class</code>解析内容, 已经淘汰这里不展开</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Hyperf</span>\<span class="title">HttpServer</span>\<span class="title">Annotation</span>\<span class="title">Controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Controller</span>(...)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndexController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d272e3cab6441760500347f.png" alt="title"></p>
-<h3 id="2-下载Hyperf"><a href="#2-下载Hyperf" class="headerlink" title="2.下载Hyperf"></a>2.下载Hyperf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/hyperf/hyperf-skeleton.git</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d272edbab6441760500349c.png" alt="title"></p>
-<h3 id="3-等待下载完成"><a href="#3-等待下载完成" class="headerlink" title="3.等待下载完成"></a>3.等待下载完成</h3><blockquote>
-<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&gt; 98%</p>
-</blockquote>
-<h3 id="4-配置PHPStorm"><a href="#4-配置PHPStorm" class="headerlink" title="4.配置PHPStorm"></a>4.配置PHPStorm</h3><p>打开<code>hyperf-skeleton</code>, 如下图所示配置<code>PHPStorm</code><br><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273552ab644178040035bf.png" alt="title"></p>
+<p>PHP8 之后注解称之为<strong>Attribute</strong>, PHP 官方提供, 使用方便, 性能优秀, 格式为<code>#[Class]</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Hyperf</span>\<span class="title">HttpServer</span>\<span class="title">Annotation</span>\<span class="title">Controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[Controller</span>(<span class="attr">prefix</span>: <span class="string">&#x27;/index&#x27;</span>)<span class="meta">]</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndexController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 反射获取属性</span></span><br><span class="line"><span class="variable">$reflectionClass</span> = <span class="keyword">new</span> <span class="title class_">ReflectionClass</span>(<span class="title class_">IndexController</span>::<span class="variable language_">class</span>);</span><br><span class="line"><span class="variable">$attributes</span> = <span class="variable">$reflectionClass</span>-&gt;<span class="title function_ invoke__">getAttributes</span>();</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$attributes</span> <span class="keyword">as</span> <span class="variable">$attribute</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">print_r</span>([<span class="variable">$attribute</span>-&gt;<span class="title function_ invoke__">getName</span>(), <span class="variable">$attribute</span>-&gt;<span class="title function_ invoke__">getArguments</span>()]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官方介绍:</p>
 <blockquote>
-<p>如果Server 选项里无法找到Docker,可能是Docker 没有暴露守护进程</p>
+<p>Attribute 提供了在代码中的声明上添加结构化、机器可读的元数据信息的能力：类、方法、函数、参数、属性和类常量可以是Attribute 的目标。然后可以使用反射 API在运行时检查Attribute 定义的元数据 。因此，Attribute 可以被认为是直接嵌入到代码中的配置语言。</p>
 </blockquote>
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d2732c3ab64417804003538.png" alt="title"></p>
-<p>点击配置旁边的运行按钮, 如下图示说明容器已经欢快的运行起来了</p>
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d27367eab644176050035ff.png" alt="title"></p>
-<h3 id="5-安装Composer-组件"><a href="#5-安装Composer-组件" class="headerlink" title="5.安装Composer 组件"></a>5.安装Composer 组件</h3><p>进入刚才部署的容器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it hyperf /bin/bash</span><br></pre></td></tr></table></figure>
-<p>进入容器后运行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home &amp;&amp; composer install</span><br></pre></td></tr></table></figure>
+<p>注解可以简单理解为, 写死在代码(类、方法、函数、参数、属性和类常量)上的<strong>配置项</strong></p>
+<h3 id="自定义一个Attribute"><a href="#自定义一个Attribute" class="headerlink" title="自定义一个Attribute"></a>自定义一个Attribute</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Attribute</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[Attribute</span>(<span class="title class_">Attribute</span>::<span class="variable constant_">TARGET_CLASS_CONSTANT</span>)<span class="meta">]</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Message</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="keyword">public</span> <span class="keyword">string</span> <span class="variable">$text</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d27381cab6441760500366d.png" alt="title"></p>
-<p>这一步到了安装<code>Hyperf</code> 组件的界面, 有需要的可以选择安装, 不需要可以全选<code>n</code></p>
-<p>安装完成后运行<code>php bin/hyperf.php start</code>, 然后打开浏览器请求<a target="_blank" rel="noopener" href="http://127.0.0.1:9501/">http://127.0.0.1:9501</a></p>
-<p><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273a40ab644176050036d7.png" alt="title"></p>
-<p>完成!</p>
-<h3 id="6-最后"><a href="#6-最后" class="headerlink" title="6.最后"></a>6.最后</h3><p>配置中的<code>Command</code>修改为<code>php /home/bin/hyperf.php start</code>, 就可以愉快的一键重启了<br><img src="/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/5d273b0fab6441760500370a.png" alt="title"></p>
+<p>可以实现一个简易版<a target="_blank" rel="noopener" href="https://hyperf.wiki/3.0/#/zh-cn/constants">枚举类</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Message</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErrorCode</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">#[Message</span>(<span class="string">&#x27;成功&#x27;</span>)<span class="meta">]</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="variable constant_">SUCCESS</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#[Message</span>(<span class="string">&#x27;系统参数错误&#x27;</span>)<span class="meta">]</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="variable constant_">ERROR</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getMessage</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$code</span></span>): <span class="title">string</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$reflectionClass</span> = <span class="keyword">new</span> <span class="title class_">ReflectionClass</span>(<span class="title class_">ErrorCode</span>::<span class="variable language_">class</span>);</span><br><span class="line">        <span class="variable">$constants</span> = <span class="variable">$reflectionClass</span>-&gt;<span class="title function_ invoke__">getReflectionConstants</span>();</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable">$constants</span> <span class="keyword">as</span> <span class="variable">$constant</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$constant</span>-&gt;<span class="title function_ invoke__">getValue</span>() === <span class="variable">$code</span>) &#123;</span><br><span class="line">                <span class="variable">$attributes</span> = <span class="variable">$constant</span>-&gt;<span class="title function_ invoke__">getAttributes</span>(<span class="title class_">Message</span>::<span class="variable language_">class</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="variable">$attributes</span>[<span class="number">0</span>]-&gt;<span class="title function_ invoke__">newInstance</span>()-&gt;text;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="title class_">ErrorCode</span>::<span class="title function_ invoke__">getMessage</span>(<span class="title class_">ErrorCode</span>::<span class="variable constant_">SUCCESS</span>);</span><br></pre></td></tr></table></figure>
+
+<p>注意, Hyperf 自带的一些注解, 功能强大, 比如:</p>
+<ol>
+<li>Inject</li>
+<li>Controller</li>
+<li>Cacheable</li>
+</ol>
+<p>但这是因为AOP 的强大, 并非注解强大, 后面介绍AOP</p>
 
       
     </div>
@@ -386,7 +366,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://assert6.github.io/2019-07-10/%E4%B8%80%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BAHyperf/" title="一分钟搭建Hyperf" target="_blank" rel="external">https://assert6.github.io/2019-07-10/一分钟搭建Hyperf/</a>
+      <a href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/" title="【注解】Hyperf 入门到精通01" target="_blank" rel="external">https://assert6.github.io/2023-09-14/hyperf/Hyperf 入门到精通/【注解】Hyperf 入门到精通01/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -433,12 +413,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2023-02-27/hyperf/Windows%20%E5%8E%9F%E7%94%9F%E7%8E%AF%E5%A2%83%E5%BC%80%E5%8F%91Hyperf/" title="Windows 原生环境开发Hyperf"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E5%8D%8F%E7%A8%8B%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A04/" title="【协程】Hyperf 入门到精通04"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2018-09-26/swoft/Swoft%20%E5%A4%9A%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E9%85%8D%E7%BD%AE/" title="【手把手教你】Swoft 多库连接池配置"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A03/" title="【生命周期】Hyperf 入门到精通03"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
