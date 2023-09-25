@@ -17,23 +17,24 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>【AOP】Hyperf 入门到精通02 | 断言说-断言很溜</title>
+  <title>【Hyperf 入门到精通】AOP 02 | 断言说-断言很溜</title>
   <meta name="description" content="AOP 使用入门及适用场景AOP 与Middleware 非常相似, 当你熟练掌握Middleware 时, 相当于也掌握了AOP我们先回顾下Middleware 调用流程:可以通过配置或者注解使用Middleware 123456789Router::get(&amp;#x27;&#x2F;&amp;#x27;, &amp;#x27;App\Controller\IndexController::index&amp;#x27;, [&amp;#">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【AOP】Hyperf 入门到精通02">
-<meta property="og:url" content="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/index.html">
+<meta property="og:title" content="【Hyperf 入门到精通】AOP 02">
+<meta property="og:url" content="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/index.html">
 <meta property="og:site_name" content="断言说-断言很溜">
 <meta property="og:description" content="AOP 使用入门及适用场景AOP 与Middleware 非常相似, 当你熟练掌握Middleware 时, 相当于也掌握了AOP我们先回顾下Middleware 调用流程:可以通过配置或者注解使用Middleware 123456789Router::get(&amp;#x27;&#x2F;&amp;#x27;, &amp;#x27;App\Controller\IndexController::index&amp;#x27;, [&amp;#">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hyperf.wiki/3.0/zh-cn/middleware/middleware.jpg">
 <meta property="article:published_time" content="2023-09-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-15T06:50:02.006Z">
+<meta property="article:modified_time" content="2023-09-25T02:53:40.050Z">
 <meta property="article:author" content="张城铭">
 <meta property="article:tag" content="Hyperf">
+<meta property="article:tag" content="入门到精通">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hyperf.wiki/3.0/zh-cn/middleware/middleware.jpg">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/index.html">
+  <link rel="canonical" href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/index.html">
   
     <link rel="alternate" href="/atom.xml" title="断言说-断言很溜" type="application/atom+xml">
   
@@ -176,7 +177,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Box/" rel="tag">Box</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hyperf/" rel="tag">Hyperf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAI/" rel="tag">OpenAI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swoft/" rel="tag">Swoft</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a><span class="tag-list-count">6</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Box/" rel="tag">Box</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hyperf/" rel="tag">Hyperf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAI/" rel="tag">OpenAI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swoft/" rel="tag">Swoft</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" rel="tag">入门到精通</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a><span class="tag-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -186,7 +187,7 @@
   <div class="widget">
     <h3 class="widget-title">标签云</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/Box/" style="font-size: 13px;">Box</a> <a href="/tags/ChatGPT/" style="font-size: 13px;">ChatGPT</a> <a href="/tags/Hyperf/" style="font-size: 14px;">Hyperf</a> <a href="/tags/OpenAI/" style="font-size: 13px;">OpenAI</a> <a href="/tags/Swoft/" style="font-size: 13.33px;">Swoft</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/XSS/" style="font-size: 13px;">XSS</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 13px;">安全</a> <a href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" style="font-size: 13.67px;">手把手教你</a>
+      <a href="/tags/Box/" style="font-size: 13px;">Box</a> <a href="/tags/ChatGPT/" style="font-size: 13px;">ChatGPT</a> <a href="/tags/Hyperf/" style="font-size: 14px;">Hyperf</a> <a href="/tags/OpenAI/" style="font-size: 13px;">OpenAI</a> <a href="/tags/Swoft/" style="font-size: 13.33px;">Swoft</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/XSS/" style="font-size: 13px;">XSS</a> <a href="/tags/%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" style="font-size: 13.33px;">入门到精通</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 13px;">安全</a> <a href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" style="font-size: 13.67px;">手把手教你</a>
     </div>
   </div>
 
@@ -214,10 +215,10 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023-09-15/TODO/" class="title">遇到的新问题 , 先挖坑</a>
+                <a href="/2023-09-25/TODO/" class="title">遇到的新问题 , 先挖坑</a>
               </p>
               <p class="item-date">
-                <time datetime="2023-09-15T06:50:02.006Z" itemprop="datePublished">2023-09-15</time>
+                <time datetime="2023-09-25T02:53:40.050Z" itemprop="datePublished">2023-09-25</time>
               </p>
             </div>
           </li>
@@ -229,22 +230,7 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/" class="title">【AOP】Hyperf 入门到精通02</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                
-              </p>
-              <p class="item-title">
-                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E4%BC%98%E9%9B%85%E8%8C%83%E5%BC%8F%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A05/" class="title">【优雅范式】Hyperf 入门到精通05</a>
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" class="title">【Hyperf 入门到精通】AOP 02</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
@@ -259,7 +245,7 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E5%8D%8F%E7%A8%8B%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A04/" class="title">【协程】Hyperf 入门到精通04</a>
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E4%BC%98%E9%9B%85%E8%8C%83%E5%BC%8F%2005/" class="title">【Hyperf 入门到精通】优雅范式 05</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
@@ -274,7 +260,22 @@
                 
               </p>
               <p class="item-title">
-                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E6%B3%A8%E8%A7%A3%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A01/" class="title">【注解】Hyperf 入门到精通01</a>
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E5%8D%8F%E7%A8%8B%2004/" class="title">【Hyperf 入门到精通】协程 04</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E6%B3%A8%E8%A7%A3%2001/" class="title">【Hyperf 入门到精通】注解 01</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
@@ -295,14 +296,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-hyperf/Hyperf 入门到精通/【AOP】Hyperf 入门到精通02" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-hyperf/Hyperf 入门到精通/【Hyperf 入门到精通】AOP 02" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      【AOP】Hyperf 入门到精通02
+      【Hyperf 入门到精通】AOP 02
     </h1>
   
 
@@ -310,7 +311,7 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/" class="article-date">
+	<a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" class="article-date">
 	  <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
 	</a>
 </span>
@@ -318,7 +319,7 @@
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/tags/Hyperf/" rel="tag">Hyperf</a>
+	<a class="article-tag-link-link" href="/tags/Hyperf/" rel="tag">Hyperf</a>, <a class="article-tag-link-link" href="/tags/%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" rel="tag">入门到精通</a>
   </span>
 
 
@@ -326,12 +327,12 @@
 
 	<span class="article-read hidden-xs">
     	<i class="icon icon-eye-fill" aria-hidden="true"></i>
-    	<span id="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/" class="leancloud_visitors"  data-flag-title="【AOP】Hyperf 入门到精通02">
+    	<span id="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" class="leancloud_visitors"  data-flag-title="【Hyperf 入门到精通】AOP 02">
 			<span class="leancloud-visitors-count">0</span>
 		</span>
     </span>
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
@@ -386,7 +387,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90AOP%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A02/" title="【AOP】Hyperf 入门到精通02" target="_blank" rel="external">https://assert6.github.io/2023-09-14/hyperf/Hyperf 入门到精通/【AOP】Hyperf 入门到精通02/</a>
+      <a href="https://assert6.github.io/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" title="【Hyperf 入门到精通】AOP 02" target="_blank" rel="external">https://assert6.github.io/2023-09-14/hyperf/Hyperf 入门到精通/【Hyperf 入门到精通】AOP 02/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -433,12 +434,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2023-09-15/TODO/" title="遇到的新问题 , 先挖坑"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2023-09-25/TODO/" title="遇到的新问题 , 先挖坑"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90%E4%BC%98%E9%9B%85%E8%8C%83%E5%BC%8F%E3%80%91Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A05/" title="【优雅范式】Hyperf 入门到精通05"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E4%BC%98%E9%9B%85%E8%8C%83%E5%BC%8F%2005/" title="【Hyperf 入门到精通】优雅范式 05"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
