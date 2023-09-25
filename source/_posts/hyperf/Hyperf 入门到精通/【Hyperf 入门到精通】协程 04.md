@@ -1,6 +1,6 @@
 ---
-title: 【协程】Hyperf 入门到精通04
-tags: [Hyperf]
+title: 【Hyperf 入门到精通】协程 04
+tags: [Hyperf, 入门到精通]
 date: 2023-09-15
 ---
 # 子协程的适用场景

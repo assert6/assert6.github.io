@@ -1,6 +1,6 @@
 ---
-title: 【优雅范式】Hyperf 入门到精通05
-tags: [Hyperf]
+title: 【Hyperf 入门到精通】优雅范式 05
+tags: [Hyperf, 入门到精通]
 date: 2023-09-15
 ---
 # 优雅编程范式

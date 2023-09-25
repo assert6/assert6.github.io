@@ -1,6 +1,6 @@
 ---
-title: 【AOP】Hyperf 入门到精通02
-tags: [Hyperf]
+title: 【Hyperf 入门到精通】AOP 02
+tags: [Hyperf, 入门到精通]
 date: 2023-09-15
 ---
 # AOP 使用入门及适用场景
