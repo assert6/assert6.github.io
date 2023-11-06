@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>分布式事务极速入门 | 断言说-断言很溜</title>
+  <meta name="description" content="举个栗子假如你正在开发一个电商系统, 该系统采用微服务架构, 订单、库存、支付服务分别部署, 各自独立数据库。下单时需要创建订单、扣减商品库存、扣减用户资金、发送短信, 你会如何编写代码?  12345678910111213# 创建订单OrderModel::create($order);# 扣减库存$this-&gt;inventoryService-&gt;decrement($orderI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式事务极速入门">
+<meta property="og:url" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="断言说-断言很溜">
+<meta property="og:description" content="举个栗子假如你正在开发一个电商系统, 该系统采用微服务架构, 订单、库存、支付服务分别部署, 各自独立数据库。下单时需要创建订单、扣减商品库存、扣减用户资金、发送短信, 你会如何编写代码?  12345678910111213# 创建订单OrderModel::create($order);# 扣减库存$this-&gt;inventoryService-&gt;decrement($orderI">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%B6%E6%9E%84.jpeg">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/saga_normal.a2849672.jpg">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/saga_rollback.8da8593f.jpg">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/image.png">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/2023052809550379.png">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/exception.4254ab59.jpg">
+<meta property="og:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/barrier.1b8ad19e.jpg">
+<meta property="article:published_time" content="2023-11-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-06T08:58:31.058Z">
+<meta property="article:author" content="张城铭">
+<meta property="article:tag" content="DTM">
+<meta property="article:tag" content="分布式事务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%B6%E6%9E%84.jpeg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="断言说-断言很溜" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/assert6" target="_blank">
+          <img class="img-circle img-rotate" src="https://avatars.githubusercontent.com/u/28561563" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">断言</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Hyperf 开发组成员</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>断言怎么说</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Box/" rel="tag">Box</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DTM/" rel="tag">DTM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hyperf/" rel="tag">Hyperf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAI/" rel="tag">OpenAI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swoft/" rel="tag">Swoft</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" rel="tag">入门到精通</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" rel="tag">分布式事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" rel="tag">手把手教你</a><span class="tag-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Box/" style="font-size: 13px;">Box</a> <a href="/tags/ChatGPT/" style="font-size: 13px;">ChatGPT</a> <a href="/tags/DTM/" style="font-size: 13px;">DTM</a> <a href="/tags/Hyperf/" style="font-size: 14px;">Hyperf</a> <a href="/tags/OpenAI/" style="font-size: 13px;">OpenAI</a> <a href="/tags/Swoft/" style="font-size: 13.33px;">Swoft</a> <a href="/tags/Windows/" style="font-size: 13px;">Windows</a> <a href="/tags/XSS/" style="font-size: 13px;">XSS</a> <a href="/tags/%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" style="font-size: 13.33px;">入门到精通</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 13px;">分布式事务</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 13px;">安全</a> <a href="/tags/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0/" style="font-size: 13.67px;">手把手教你</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-11-06/TODO/" class="title">遇到的新问题 , 先挖坑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-06T08:58:31.058Z" itemprop="datePublished">2023-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" class="title">分布式事务极速入门</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-05T16:00:00.000Z" itemprop="datePublished">2023-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" class="title">【Hyperf 入门到精通】AOP 02</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E4%BC%98%E9%9B%85%E8%8C%83%E5%BC%8F%2005/" class="title">【Hyperf 入门到精通】优雅范式 05</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91%E5%8D%8F%E7%A8%8B%2004/" class="title">【Hyperf 入门到精通】协程 04</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-14T16:00:00.000Z" itemprop="datePublished">2023-09-15</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-dtm/分布式事务极速入门" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      分布式事务极速入门
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" class="article-date">
+	  <time datetime="2023-11-05T16:00:00.000Z" itemprop="datePublished">2023-11-06</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/DTM/" rel="tag">DTM</a>, <a class="article-tag-link-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" rel="tag">分布式事务</a>
+  </span>
+
+
+        
+
+	<span class="article-read hidden-xs">
+    	<i class="icon icon-eye-fill" aria-hidden="true"></i>
+    	<span id="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" class="leancloud_visitors"  data-flag-title="分布式事务极速入门">
+			<span class="leancloud-visitors-count">0</span>
+		</span>
+    </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h1><p>假如你正在开发一个电商系统, 该系统采用微服务架构, 订单、库存、支付服务分别部署, 各自独立数据库。<br>下单时需要创建订单、扣减商品库存、扣减用户资金、发送短信, 你会如何编写代码?</p>
+<p><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%B6%E6%9E%84.jpeg"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建订单</span></span><br><span class="line"><span class="title class_">OrderModel</span>::<span class="title function_ invoke__">create</span>(<span class="variable">$order</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扣减库存</span></span><br><span class="line"><span class="variable language_">$this</span>-&gt;inventoryService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$orderItems</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扣减资金</span></span><br><span class="line"><span class="variable language_">$this</span>-&gt;walletService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$wallet_id</span>, <span class="variable">$amount</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送短信</span></span><br><span class="line"><span class="variable language_">$this</span>-&gt;smsService-&gt;<span class="title function_ invoke__">send</span>(<span class="variable">$notication</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="string">&quot;订单创建成功!&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>让我们假设<strong>每行</strong>代码都可能出现异常, 阁下该如何应对?</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">beginTransaction</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">OrderModel</span>::<span class="title function_ invoke__">create</span>(<span class="variable">$order</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="variable">$inventoryDecrement</span> = <span class="variable language_">$this</span>-&gt;inventoryService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$orderItem</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$walletDecrement</span> = <span class="variable language_">$this</span>-&gt;walletService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$walltId</span>, <span class="variable">$amount</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="variable language_">$this</span>-&gt;smsService-&gt;<span class="title function_ invoke__">send</span>(<span class="variable">$notication</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">commit</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;订单创建成功!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (\<span class="built_in">Throwable</span> <span class="variable">$throwable</span>) &#123;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$inventoryDecrement</span>) &#123;</span><br><span class="line">    		<span class="variable language_">$this</span>-&gt;inventoryService-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$orderItem</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$walletDecrement</span>) &#123;</span><br><span class="line">    		<span class="variable language_">$this</span>-&gt;walletService-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$walltId</span>, <span class="variable">$amount</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">rollBack</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;订单创建失败!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假如在事务Commit 时, 恰巧Pod <strong>重启</strong>了, 阁下又该如何应对?</p>
+<p>假如在回滚资金时, 恰巧出现了请求<strong>超时</strong>, 阁下叒该如何应对?</p>
+<p>假如短信发送<strong>没有</strong>补偿接口, 阁下又双叒叕该如何应对?</p>
+<hr>
+<h1 id="SAGA"><a href="#SAGA" class="headerlink" title="SAGA"></a>SAGA</h1><p>在上述的例子中, 其实已经有了初步的分布式事务的概念。</p>
+<p>如<code>库存扣减</code>与<code>资金扣减</code>失败后, 手动进行补偿的思想, 就是<a target="_blank" rel="noopener" href="https://www.dtm.pub/guide/e-saga.html">SAGA 型事务</a>!</p>
+<p><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/saga_normal.a2849672.jpg"><br><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/saga_rollback.8da8593f.jpg"></p>
+<p>我们用Saga 重写一下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取全局事务ID</span></span><br><span class="line"><span class="variable">$gid</span> = <span class="variable language_">$this</span>-&gt;saga-&gt;<span class="title function_ invoke__">init</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编排业务流程, Service 均是URL</span></span><br><span class="line"><span class="variable language_">$this</span>-&gt;saga-&gt;<span class="title function_ invoke__">add</span>(</span><br><span class="line">    <span class="variable">$orderService</span> . <span class="string">&#x27;/create&#x27;</span>,</span><br><span class="line">    <span class="variable">$orderService</span> . <span class="string">&#x27;/delete&#x27;</span>,</span><br><span class="line">    [<span class="string">&#x27;order_info&#x27;</span> =&gt; <span class="variable">$order</span>],</span><br><span class="line">)-&gt;<span class="title function_ invoke__">add</span>(</span><br><span class="line">    <span class="variable">$inventoryService</span> . <span class="string">&#x27;/decrement&#x27;</span>,		# 分支事务</span><br><span class="line">    <span class="variable">$inventoryService</span> . <span class="string">&#x27;/increment&#x27;</span>,</span><br><span class="line">    [<span class="string">&#x27;items&#x27;</span> =&gt; <span class="variable">$orderItem</span>],</span><br><span class="line">)-&gt;<span class="title function_ invoke__">add</span>(</span><br><span class="line">    <span class="variable">$walletService</span> . <span class="string">&#x27;/decrement&#x27;</span>,</span><br><span class="line">    <span class="variable">$walletService</span> . <span class="string">&#x27;/increment&#x27;</span>,</span><br><span class="line">    [<span class="string">&#x27;wallet_id&#x27;</span> =&gt; <span class="variable">$walletId</span>, <span class="string">&#x27;amount&#x27;</span> =&gt; <span class="variable">$amount</span>],</span><br><span class="line">)-&gt;<span class="title function_ invoke__">add</span>(</span><br><span class="line">    <span class="variable">$smsService</span> . <span class="string">&#x27;/send&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    [<span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>],</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交全局事务</span></span><br><span class="line"><span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;saga-&gt;<span class="title function_ invoke__">submit</span>(); <span class="comment">// &#123;&quot;dtm_result&quot;:&quot;SUCCESS&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>本地事务封装为远程调用, 由DTM 回调触发!</p>
+<p><strong>需要注意, 在Saga 事务Submit 时, 返回的响应仅仅是DTM 接收请求并落库的结果, 而非分支事务的响应结果! 且DTM 在判定分支事务是否成功时, 是根据特定的StatusCode, 有且仅有409 代表</strong><a target="_blank" rel="noopener" href="https://www.dtm.pub/practice/arch.html#proto"><strong>失败</strong></a><strong>!</strong></p>
+<blockquote>
+<p>由于分布式事务涉及分布式协作，某些参与者可能出现暂时不可用或者返回500等异常情况是在所难免的。这些暂时不可用和500，与业务上的失败有非常大的区别。</p>
+<ul>
+<li><strong>SUCCESS:</strong> 状态码 200 StatusOK</li>
+<li><strong>FAILURE:</strong> 状态码 409 StatusConflict</li>
+<li><strong>ONGOING:</strong> 状态码 425 StatusTooEarly , 表示未完成，还在正常进行中，此时DTM 服务器需要采用固定间隔重试，而不是指数退避算法重试</li>
+<li><strong>其他:</strong> 表示临时错误，采用指数退避算法<strong>重试</strong>，避免出现大量重试，导致负载过高</li>
+</ul>
+</blockquote>
+<p>DTM 在SAGA 型事务中扮演的角色, 其实仅仅是一个数据库, 外加请求重试。。。<br><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/image.png" alt="image.png"></p>
+<blockquote>
+<p>假如在事务提交前, 恰巧Pod <strong>重启</strong>了, 阁下叒该如何应对?</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">beginTransaction</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">OrderModel</span>::<span class="title function_ invoke__">create</span>(<span class="variable">$order</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="variable">$inventoryDecrement</span> = <span class="variable language_">$this</span>-&gt;inventoryService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$orderItem</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$walletDecrement</span> = <span class="variable language_">$this</span>-&gt;walletService-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$walletId</span>, <span class="variable">$amount</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="variable language_">$this</span>-&gt;smsService-&gt;<span class="title function_ invoke__">send</span>(<span class="variable">$notication</span>);</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">commit</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;订单创建成功!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (\<span class="built_in">Throwable</span> <span class="variable">$throwable</span>) &#123;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>由于 Saga 事务<strong>不保证隔离性</strong>, 在极端情况下可能由于脏写无法完成回滚操作, 比如举一个极端的例子, 分布式事务内先给用户A充值, 再给用户B扣减余额。如果给A用户充值成功, 在B扣减成功之前, A用户把余额消费掉了, 这时事务发生回滚, 则<strong>无法进行补偿</strong>了。这就是缺乏隔离性造成的典型的问题, 实践中一般的应对方法是：</p>
+<ul>
+<li>业务流程设计时遵循“宁可长款, 不可短款”的原则, 长款意思是客户少了钱机构多了钱, 以机构信誉可以给客户退款, 反之则是短款, 少的钱可能追不回来了。所以在业务流程设计上一定是先扣款。</li>
+</ul>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Saga 仅能最低限度保证事务性, 一般用在业务时间较长、业务重要性较低或者非同步响应的场景。</p>
+<hr>
+<h1 id="幂等"><a href="#幂等" class="headerlink" title="幂等"></a>幂等</h1><blockquote>
+<p>假如在回滚资金时, 恰巧出现了请求<strong>超时</strong>, 阁下叒该如何应对?</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$walletDecrement</span>) &#123;</span><br><span class="line">    <span class="comment"># 请求超时...</span></span><br><span class="line">		<span class="variable language_">$this</span>-&gt;walletService-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$walletId</span>, <span class="variable">$amount</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重试吗? 若超时的请求实际上已经成功了, 会出现用户资金多次增加;</p>
+<p>不重试吗? 超时的请求没有成功的话, 资金会凭空丢失, 用户直接”C 语言”投诉;</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><a target="_blank" rel="noopener" href="http://www.360doc.com/content/23/1010/11/1099654870_1099654870.shtml">聊聊幂等</a></p>
+<p><strong>任意多次执行所产生的影响均与一次执行的影响相同。</strong><br><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/2023052809550379.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeZero</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$num</span></span>): <span class="title">int</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$num</span> * <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setTrue</span>(<span class="params"></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;foo = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increment</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$amount</span></span>): <span class="title">int</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;amount += <span class="variable">$amount</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>场景举例, 博客 &#x2F; 微博系统点赞:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> post <span class="keyword">SET</span> likes <span class="operator">=</span> likes <span class="operator">+</span> <span class="number">1</span> <span class="keyword">WHERE</span> post_id <span class="operator">=</span> <span class="number">1981273</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>上述设计为反面案例。正常情况下应该设计为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 幂等</span><br><span class="line"><span class="keyword">START</span> TRANSACTION;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> post_likes (user_id, post_id) <span class="keyword">VALUES</span> (<span class="number">10086</span>, <span class="number">1981273</span>); # 唯一索引</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">UPDATE</span> post <span class="keyword">SET</span> likes <span class="operator">=</span> likes <span class="operator">+</span> <span class="number">1</span> <span class="keyword">WHERE</span> post_id <span class="operator">=</span> <span class="number">1981273</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>那我们来重新设计一下资产服务:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WalletService</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">increment</span>(<span class="params"><span class="keyword">int</span> <span class="variable">$walletId</span>, <span class="keyword">string</span> <span class="variable">$orderNo</span>, <span class="keyword">int</span> <span class="variable">$amount</span></span>): <span class="title">bool</span></span></span><br><span class="line"><span class="function">  	</span>&#123;</span><br><span class="line">    		<span class="keyword">try</span> &#123;</span><br><span class="line">    				<span class="title class_">Db</span>::<span class="title function_ invoke__">beginTransaction</span>();</span><br><span class="line">  </span><br><span class="line">            <span class="comment"># order_no 唯一索引</span></span><br><span class="line">            <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">create</span>([<span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>, <span class="string">&#x27;amount&#x27;</span> =&gt; <span class="variable">$amount</span>, <span class="string">&#x27;wallet_id&#x27;</span> =&gt; <span class="variable">$walletId</span>]);</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 流水优先于余额</span></span><br><span class="line">          	<span class="title class_">Wallet</span>::<span class="title function_ invoke__">find</span>(<span class="variable">$walletId</span>)-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$amount</span>);</span><br><span class="line">            </span><br><span class="line">          	<span class="title class_">Db</span>::<span class="title function_ invoke__">commit</span>();</span><br><span class="line">          </span><br><span class="line">        		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">				&#125; <span class="keyword">catch</span> (UniqueIndexException <span class="variable">$exception</span>) &#123;</span><br><span class="line">            <span class="title class_">Db</span>::<span class="title function_ invoke__">rollback</span>();</span><br><span class="line">          </span><br><span class="line">       			<span class="keyword">return</span> <span class="literal">true</span>;	<span class="comment"># 注意这里</span></span><br><span class="line">				&#125; <span class="keyword">catch</span> (\<span class="built_in">Throwable</span> <span class="variable">$throwable</span>) &#123;</span><br><span class="line">            <span class="title class_">Db</span>::<span class="title function_ invoke__">rollback</span>();</span><br><span class="line">          </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>流水表可以反推出任意时间点的用户余额, 流水重于余额。</p>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>通过在事务里, 向具有<strong>唯一</strong>索引的流水表插入数据, 确保操作数值幂等, 是常用的幂等策略。<br>还有其他的实现方式, 比如请求中携带<code>request_id</code>进行系统级幂等、DTM 使用<code>gid</code>全局事务ID 进行幂等…</p>
+<hr>
+<h1 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h1><p>在上面SAGA 代码中, 事务一致性比较弱, 并且是异步完成, 无法满足强一致性与同步响应的业务场景, 而这种场景往往是普遍且核心的场景。</p>
+<p>TCC是Try、Confirm、Cancel三个词语的缩写, 适用于一致性要求较强, 事务逻辑较短的业务场景。<br>下面我们用TCC 重写一下代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$gid</span> = <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">init</span>();</span><br><span class="line"></span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">beginTransaction</span>();</span><br><span class="line"></span><br><span class="line">    <span class="variable">$orderNo</span> = <span class="title class_">OrderModel</span>::<span class="title function_ invoke__">create</span>(<span class="variable">$order</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用库存服务, 同步获取扣减相应</span></span><br><span class="line">    <span class="variable">$inventoryResult</span> = <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">callBranch</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>,</span><br><span class="line">            <span class="string">&#x27;order_item&#x27;</span> =&gt; <span class="variable">$orderItem</span>,</span><br><span class="line">        ],</span><br><span class="line">        <span class="variable">$inventoryService</span> . <span class="string">&#x27;/tcc/decrementTry&#x27;</span>,</span><br><span class="line">        <span class="variable">$inventoryService</span> . <span class="string">&#x27;/tcc/decrementConfirm&#x27;</span>,</span><br><span class="line">        <span class="variable">$inventoryService</span> . <span class="string">&#x27;/tcc/decrementCancel&#x27;</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用资金服务, 同步获取扣减相应</span></span><br><span class="line">    <span class="variable">$walletServiceResult</span> = <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">callBranch</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>,</span><br><span class="line">            <span class="string">&#x27;amount&#x27;</span> =&gt; <span class="variable">$amount</span>,</span><br><span class="line">            <span class="string">&#x27;wallet_id&#x27;</span> =&gt; <span class="variable">$walletId</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="variable">$walletService</span> . <span class="string">&#x27;/tcc/decrementTry&#x27;</span>,</span><br><span class="line">        <span class="variable">$walletService</span> . <span class="string">&#x27;/tcc/decrementConfirm&#x27;</span>,</span><br><span class="line">        <span class="variable">$walletService</span> . <span class="string">&#x27;/tcc/decrementCancel&#x27;</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用短信服务, 同步获取相应(资源预占, 不发送)</span></span><br><span class="line">    <span class="variable">$smsServiceResult</span> = <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">callBranch</span>(</span><br><span class="line">        [</span><br><span class="line">            <span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>,</span><br><span class="line">            <span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>,</span><br><span class="line">        ],</span><br><span class="line">        <span class="variable">$smsService</span> . <span class="string">&#x27;/tcc/sendTry&#x27;</span>,</span><br><span class="line">        <span class="variable">$smsService</span> . <span class="string">&#x27;/tcc/sendConfirm&#x27;</span>,</span><br><span class="line">        <span class="variable">$smsService</span> . <span class="string">&#x27;/tcc/sendCancel&#x27;</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment"># DTM 回调各分支事务Confirm 接口</span></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">submit</span>();</span><br><span class="line">  </span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">commit</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;订单创建成功!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (\<span class="built_in">Throwable</span> <span class="variable">$throwable</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># DTM 回调各分支事务Cancel 接口</span></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;tcc-&gt;<span class="title function_ invoke__">abort</span>();</span><br><span class="line"></span><br><span class="line">    <span class="title class_">Db</span>::<span class="title function_ invoke__">rollBack</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;订单创建失败!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码可以看到TCC 的特点:<br>优点:</p>
+<ul>
+<li>无需将本地事务异步化</li>
+<li>同步获取分支事务执行结果</li>
+<li>调用方比较简单…</li>
+</ul>
+<p>缺点:</p>
+<ul>
+<li>服务需要实现Try &#x2F; Confirm &#x2F; Cancel</li>
+<li>流水表需要pending 状态</li>
+</ul>
+<h2 id="待定状态"><a href="#待定状态" class="headerlink" title="待定状态"></a>待定状态</h2><p>每个操作接口都需要Try、Confirm、Cancel三个接口, 流水表需要pending 状态:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WalletService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">#[Transaction</span><span class="meta">]</span></span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">decrementTry</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span>, <span class="keyword">int</span> <span class="variable">$walletId</span>, <span class="keyword">int</span> <span class="variable">$amount</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"># order_no 唯一索引</span></span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">create</span>([</span><br><span class="line">            <span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>, </span><br><span class="line">            <span class="string">&#x27;amount&#x27;</span> =&gt; <span class="variable">$amount</span>, </span><br><span class="line">            <span class="string">&#x27;wallet_id&#x27;</span> =&gt; <span class="variable">$walletId</span>,</span><br><span class="line">            <span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;pending&#x27;</span>, # 未确认状态, 最终Confirm 或Cancel</span><br><span class="line">        ]);</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 资源预占, 负数报错</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Wallet</span>::<span class="title function_ invoke__">find</span>(<span class="variable">$walletId</span>)-&gt;<span class="title function_ invoke__">decrement</span>(<span class="variable">$amount</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">decrementConfirm</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">where</span>([<span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;confirm&#x27;</span>]);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="meta">#[Transaction</span><span class="meta">]</span></span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">decrementCancel</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"># 乐观锁</span></span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">where</span>([<span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>, <span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;pending&#x27;</span>])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;cancel&#x27;</span>]);</span><br><span class="line">      </span><br><span class="line">        <span class="comment"># 资源解冻</span></span><br><span class="line">        <span class="title class_">Wallet</span>::<span class="title function_ invoke__">find</span>(<span class="variable">$walletId</span>)-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$amount</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>客户端的列表接口需要<strong>过滤</strong>peding、cancel 状态的流水, 不提供给用户查看。</p>
+<h2 id="资源先占后补"><a href="#资源先占后补" class="headerlink" title="资源先占后补"></a>资源先占后补</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WalletService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">#[Transaction</span><span class="meta">]</span></span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">incrementTry</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span>, <span class="keyword">int</span> <span class="variable">$walletId</span>, <span class="keyword">int</span> <span class="variable">$amount</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">create</span>([</span><br><span class="line">            <span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>, </span><br><span class="line">            <span class="string">&#x27;amount&#x27;</span> =&gt; <span class="variable">$amount</span>, </span><br><span class="line">            <span class="string">&#x27;wallet_id&#x27;</span> =&gt; <span class="variable">$walletId</span>,</span><br><span class="line">            <span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;pending&#x27;</span>, # 未确认状态, 最终Confirm 或Cancel</span><br><span class="line">        ]);</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 增加资源切勿直接加</span></span><br><span class="line">        <span class="comment"># Wallet::find($walletId)-&gt;increment($amount);</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="meta">#[Transaction</span><span class="meta">]</span></span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">incrementConfirm</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"># 乐观锁</span></span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">where</span>([<span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span> <span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;pending&#x27;</span>])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;confirm&#x27;</span>]);</span><br><span class="line">      </span><br><span class="line">        <span class="comment"># 资源增加</span></span><br><span class="line">        <span class="title class_">Wallet</span>::<span class="title function_ invoke__">find</span>(<span class="variable">$walletId</span>)-&gt;<span class="title function_ invoke__">increment</span>(<span class="variable">$amount</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">incrementCancel</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$orderNo</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title class_">WalletLog</span>::<span class="title function_ invoke__">where</span>([<span class="string">&#x27;order_no&#x27;</span> =&gt; <span class="variable">$orderNo</span>])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;cancel&#x27;</span>]);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="第三方操作"><a href="#第三方操作" class="headerlink" title="第三方操作"></a>第三方操作</h2><p>针对部分第三方操作无法回滚, 一般有两种办法:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmsService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendTry</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$phone</span>, <span class="keyword">string</span> <span class="variable">$notication</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"># 检查是否可以发送, 确保Confirm 不会失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Sms</span>::<span class="title function_ invoke__">check</span>(<span class="variable">$phone</span>, <span class="variable">$notication</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendConfirm</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$phone</span>, <span class="keyword">string</span> <span class="variable">$notication</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"># 调用N 次可不能发送N 次</span></span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Sms</span>::<span class="title function_ invoke__">send</span>([</span><br><span class="line">            <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="variable">$phone</span>,</span><br><span class="line">            <span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>,</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendCancel</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅录入数据库, 异步执行</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmsService</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendTry</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$phone</span>, <span class="keyword">string</span> <span class="variable">$notication</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">      	<span class="title class_">Sms</span>::<span class="title function_ invoke__">check</span>(<span class="variable">$phone</span>, <span class="variable">$notication</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Sms</span>::<span class="title function_ invoke__">create</span>(</span><br><span class="line">            <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="variable">$phone</span>,</span><br><span class="line">            <span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>,</span><br><span class="line">            <span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;pending&#x27;</span>,</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendConfirm</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$phone</span>, <span class="keyword">string</span> <span class="variable">$notication</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Sms</span>::<span class="title function_ invoke__">where</span>([</span><br><span class="line">            <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="variable">$phone</span>,</span><br><span class="line">            <span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>,</span><br><span class="line">        ])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;confirm&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sendCancel</span>(<span class="params"><span class="keyword">string</span> <span class="variable">$phone</span>, <span class="keyword">string</span> <span class="variable">$notication</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Sms</span>::<span class="title function_ invoke__">where</span>([</span><br><span class="line">            <span class="string">&#x27;phone&#x27;</span> =&gt; <span class="variable">$phone</span>,</span><br><span class="line">            <span class="string">&#x27;notication&#x27;</span> =&gt; <span class="variable">$notication</span>,</span><br><span class="line">        ])-&gt;<span class="title function_ invoke__">update</span>([<span class="string">&#x27;status&#x27;</span> =&gt; <span class="string">&#x27;cancel&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="子事务屏障"><a href="#子事务屏障" class="headerlink" title="子事务屏障"></a>子事务屏障</h1><p><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/exception.4254ab59.jpg"></p>
+<ul>
+<li><p>业务处理请求4的时候，Cancel 在Try 之前执行，需要处理空补偿</p>
+</li>
+<li><p>业务处理请求6的时候，Cancel 重复执行，需要幂等</p>
+</li>
+<li><p>业务处理请求8的时候，Try 在Cancel 后执行，需要处理悬挂</p>
+</li>
+<li><p><strong>空补偿</strong>： Cancel执行时，Try未执行，事务分支的Cancel操作需要判断出Try未执行，这时需要忽略Cancel中的业务数据更新，直接返回</p>
+</li>
+<li><p><strong>悬挂</strong>： Try执行时，Cancel已执行完成，事务分支的Try操作需要判断出Cancel已执行，这时需要忽略Try中的业务数据更新，直接返回</p>
+</li>
+<li><p><strong>幂等</strong>： 由于任何一个请求都可能出现网络异常，出现重复请求，所有的分布式事务分支操作，都需要保证幂等性</p>
+</li>
+</ul>
+<p><img src="/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/barrier.1b8ad19e.jpg"></p>
+<p><a target="_blank" rel="noopener" href="https://www.dtm.pub/practice/barrier.html#%E5%8E%9F%E7%90%86">子事务屏障原理</a></p>
+<h1 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h1><ul>
+<li>任何请求都要考虑失败</li>
+<li>接口响应错误 !&#x3D; 业务失败</li>
+</ul>
+<h1 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h1><p><a target="_blank" rel="noopener" href="https://www.dtm.pub/guide/start.html">DTM 文档</a><br><a target="_blank" rel="noopener" href="https://github.com/dtm-php/dtm-client">dtm-php-client</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://assert6.github.io/2023-11-05/dtm/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" title="分布式事务极速入门" target="_blank" rel="external">https://assert6.github.io/2023-11-05/dtm/分布式事务极速入门/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/assert6" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://avatars.githubusercontent.com/u/28561563" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/assert6" target="_blank"><span class="text-dark">断言</span><small class="ml-1x">Hyperf 开发组成员</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023-11-06/TODO/" title="遇到的新问题 , 先挖坑"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023-09-14/hyperf/Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/%E3%80%90Hyperf%20%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A%E3%80%91AOP%2002/" title="【Hyperf 入门到精通】AOP 02"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/assert6" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 张城铭
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        	<br>
+        	<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备19073840号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'hiY1arwpygW2djZWZ4DZ73GZ-gzGzoHsz',
+    appKey: 'teiwZSzpQ4BdurxeURpiTnYs',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
