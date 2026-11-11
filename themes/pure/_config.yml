@@ -119,7 +119,7 @@ repository:
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
 comment:
-  type: valine  # 启用哪种评论系统
+  type: false  # 启用哪种评论系统，false 为关闭评论
   disqus:  # enter disqus shortname here
   youyan: 
     uid: 1783844 # enter youyan uid 
@@ -140,17 +140,6 @@ comment:
     enableHotKey: true
     language: zh-CN
     
-  valine: # Valine. https://valine.js.org
-    appid: 'hiY1arwpygW2djZWZ4DZ73GZ-gzGzoHsz' # your leancloud application appid
-    appkey: 'teiwZSzpQ4BdurxeURpiTnYs'  # your leancloud application appkey
-    notify: false # mail notifier , https://github.com/xCss/Valine/wiki
-    verify: false # Verification code
-    placeholder: Just go go # comment box placeholder
-    avatar: mm # gravatar style
-    meta: nick,mail,link # custom comment header
-    pageSize: 10 # pagination size
-    visitor: true # Article reading statistic https://valine.js.org/visitor.html
-
 # douban 豆瓣书单
 # Api：
   # https://developers.douban.com/wiki/?title=book_v2 图书

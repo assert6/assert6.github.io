@@ -126,17 +126,6 @@ comment:
     repo:  #必须. GitHub repository.
     ClientID:  #必须. GitHub Application Client ID.
     ClientSecret:  #必须. GitHub Application Client Secret.
-  valine: # Valine. https://valine.js.org
-    appid:  # your leancloud application appid
-    appkey:  # your leancloud application appkey
-    notify: false # mail notifier , https://github.com/xCss/Valine/wiki
-    verify: false # Verification code
-    placeholder: Just go go # comment box placeholder
-    avatar: mm # gravatar style
-    meta: nick,mail,link # custom comment header
-    pageSize: 10 # pagination size
-    visitor: false # Article reading statistic https://valine.js.org/visitor.html
-
 # douban 豆瓣书单
 # Api：
   # https://developers.douban.com/wiki/?title=book_v2 图书

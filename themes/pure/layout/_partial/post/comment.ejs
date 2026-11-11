@@ -1,4 +1,4 @@
-<% if (post.comments) { %>
+<% if (post.comments && theme.comment.type) { %>
   <section id="comments">
   	<% if (theme.comment.type === 'disqus') { %>
       <div id="disqus_thread">
@@ -14,8 +14,6 @@
 
     <% } else if (theme.comment.type === 'gitalk') { %>
            
-    <% } else if (theme.comment.type === 'valine') { %>
-      <div id="vcomments"></div>
     <% } %>
   </section>
 <% } %>
